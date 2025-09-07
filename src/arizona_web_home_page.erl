@@ -144,8 +144,16 @@ hero() ->
 
 cta_buttons() ->
     [
-        #{text => ~"Get Started", type => primary},
-        #{text => ~"View Documentation", type => secondary}
+        #{
+            text => ~"Get Started",
+            type => primary,
+            href => ~"https://github.com/arizona-framework/arizona?tab=readme-ov-file#quick-start"
+        },
+        #{
+            text => ~"View Documentation",
+            type => secondary,
+            href => ~"https://github.com/arizona-framework/arizona/blob/main/README.md"
+        }
     ].
 
 %% Features section component

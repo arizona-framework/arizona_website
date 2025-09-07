@@ -79,17 +79,22 @@ nav_link(Bindings) ->
     </a>
     """).
 
-%% CTA button component - used 2 times in hero section
+%% CTA button component - used 2 times in hero section (renders as styled link)
 cta_button(Bindings) ->
     ButtonType = arizona_template:get_binding(type, Bindings, fun() -> primary end),
     arizona_template:from_string(~"""
-    <button class="{[
-        ~"font-bold py-4 px-8 rounded-xl transition-all duration-300 cursor-pointer ",
-        button_classes(ButtonType),
-        arizona_template:get_binding(extra_classes, Bindings, fun() -> ~"" end)
-    ]}">
+    <a
+        href="{arizona_template:get_binding(href, Bindings)}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="{[
+            ~"inline-block font-bold py-4 px-8 rounded-xl transition-all duration-300 cursor-pointer ",
+            button_classes(ButtonType),
+            arizona_template:get_binding(extra_classes, Bindings, fun() -> ~"" end)
+        ]}"
+    >
         {arizona_template:get_binding(text, Bindings)}
-    </button>
+    </a>
     """).
 
 button_classes(primary) ->
