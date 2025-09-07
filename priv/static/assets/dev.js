@@ -10,7 +10,7 @@ document.addEventListener('arizonaEvent', (event) => {
             if (data.status === 'connected') {
                 setTimeout(() => {
                     window.Prism.highlightAll();
-                }, 5)
+                }, 50)
             }
             break;
         }
