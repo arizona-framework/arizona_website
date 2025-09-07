@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+@source "src/**/*.erl";
+
+body {
+  background-color: green;
+}

@@ -9,13 +9,18 @@ arizona() ->
         server => #{
             routes => routes()
         },
-        reloader => #{
+        watcher => #{
             enabled => true,
             rules => [
                 #{
+                    directories => ["assets/css", "src"],
+                    patterns => [".*\\.css$", ".*\\.erl$"],
+                    callback => fun compile_css/1
+                },
+                #{
                     directories => ["src"],
                     patterns => [".*\\.erl$", ".*\\.hrl$"],
-                    callback => fun recompile/1
+                    callback => fun compile_erl/1
                 }
             ]
         }
@@ -25,10 +30,14 @@ routes() ->
     [
         {asset, ~"/favicon.ico", {priv_file, arizona_web, ~"static/favicon.ico"}},
         {asset, ~"/robots.txt", {priv_file, arizona_web, ~"static/robots.txt"}},
-        {view, ~"/", arizona_web_view, #{title => ~"Arizona Framework"}}
+        {asset, ~"/assets/main.js", {priv_file, arizona_web, ~"static/assets/main.js"}},
+        {asset, ~"/assets/app.css", {priv_file, arizona_web, ~"static/assets/app.css"}},
+        {asset, ~"/assets", {priv_dir, arizona, ~"static/assets"}},
+        {websocket, ~"/live"},
+        {view, ~"/", arizona_web_view, {arizona_web_page_home, #{name => ~"World"}}}
     ].
 
-recompile(Files) ->
+compile_erl(Files) ->
     try
         CompileResult = os:cmd("rebar3 compile", #{exception_on_failure => true}),
         ok = io:format("~ts", [CompileResult]),
@@ -41,15 +50,27 @@ recompile(Files) ->
                     nomatch -> AbsFilename;
                     Suffix -> Suffix
                 end,
-                ok = io:format("===> Reloading ~s~n", [Filename]),
+                ok = io:format("===> Reloading module: ~s~n", [Filename]),
                 BaseName = filename:basename(Filename, ".erl"),
                 Module = list_to_existing_atom(BaseName),
                 code:purge(Module),
                 code:load_file(Module)
             end,
             ErlFiles
-        )
+        ),
+        ok = io:format("===> Reloading page~n"),
+        arizona_pubsub:broadcast(~"reload", erl)
     catch
         error:{command_failed, ResultBeforeFailure, _ExitCode} ->
             io:format("~ts~n", [ResultBeforeFailure])
+    end.
+
+compile_css(_Files) ->
+    try
+        CompileResult = os:cmd("npm run build-css", #{exception_on_failure => true}),
+        ok = io:format("~ts", [CompileResult]),
+        arizona_pubsub:broadcast(~"reload", css)
+    catch
+        error:{command_failed, ResultBeforeFailure, _ExitCode} ->
+            io:format("CSS build failed:~n~ts~n", [ResultBeforeFailure])
     end.
