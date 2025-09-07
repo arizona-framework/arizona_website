@@ -34,7 +34,10 @@ feature_card(Bindings) ->
 %% Stat card component - used 3 times in performance stats section
 stat_card(Bindings) ->
     arizona_template:from_string(~"""
-    <div class="bg-charcoal/50 backdrop-blur-sm rounded-xl p-8 border border-slate">
+    <div class="{[
+        ~"bg-charcoal/50 backdrop-blur-sm rounded-xl p-8 border border-slate ",
+        ~"hover:border-arizona-teal/50 transition-all duration-300"
+    ]}">
         <div class="text-4xl font-bold text-arizona-teal mb-2">
             {arizona_template:get_binding(value, Bindings)}
         </div>
