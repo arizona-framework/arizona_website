@@ -210,32 +210,13 @@ code_example() ->
                         <span class="text-silver text-sm">counter_view.erl</span>
                     </div>
                     <div class="p-6">
-                        <pre class="text-arizona-teal text-sm leading-relaxed overflow-x-auto"><code>
-                        -module(counter_view).
-                        -behaviour(arizona_stateful).
-                        -compile(\{parse_transform, arizona_parse_transform}).
-
-                        -export([mount/1, handle_event/2, render/1]).
-
-                        mount(Bindings) ->
-                            arizona_stateful:new(?MODULE, Bindings#\{count => 0}).
-
-                        handle_event(\{"increment"}, Bindings) ->
-                            Count = arizona_template:get_binding(count, Bindings),
-                            \{ok, Bindings#\{count => Count + 1}};
-                        handle_event(\{"decrement"}, Bindings) ->
-                            Count = arizona_template:get_binding(count, Bindings),
-                            \{ok, Bindings#\{count => Count - 1}}.
-
-                        render(Bindings) ->
-                            Count = arizona_template:get_binding(count, Bindings),
-                            arizona_template:from_string(~"""
-                            &lt;div class="text-center"&gt;
-                                &lt;h1 class="text-4xl font-bold"&gt;\{Count}&lt;/h1&gt;
-                                &lt;button az-click="increment" class="btn-primary"&gt;+&lt;/button&gt;
-                                &lt;button az-click="decrement" class="btn-secondary"&gt;-&lt;/button&gt;
-                            &lt;/div&gt;
-                            """).</code></pre>
+                        <pre class="text-arizona-teal text-sm leading-relaxed overflow-x-auto">
+                            <code>
+    {                           % Code is flush-left to align with closing triple-quotes
+                                % preserving proper indentation in the example output
+                                html_encode(example())}
+                            </code>
+                        </pre>
                     </div>
                 </div>
 
@@ -247,6 +228,55 @@ code_example() ->
         </div>
     </section>
     """").
+
+%% HTML encoding helper for code examples
+html_encode(Text) ->
+    ReplacementList = [
+        {"&", "\\&amp;"},
+        {"<", "\\&lt;"},
+        {">", "\\&gt;"},
+        {"\"", "\\&quot;"},
+        {"'", "\\&#39;"}
+    ],
+    lists:foldl(fun({Pattern, Replacement}, Acc) ->
+        re:replace(Acc, Pattern, Replacement, [global, {return, binary}])
+    end, Text, ReplacementList).
+
+example() ->
+    ~""""
+    -module(counter).
+    -behaviour(arizona_stateful).
+    -compile({parse_transform, arizona_parse_transform}).
+
+    -export([mount/1, render/1, handle_event/3]).
+
+    mount(Bindings) ->
+        arizona_stateful:new(?MODULE, Bindings#{
+            count => maps:get(count, Bindings, 0)
+        }).
+
+    render(Bindings) ->
+        arizona_template:from_string(~"""
+        <div class="text-center">
+            <span class="text-4xl font-bold">
+                {arizona_template:get_binding(count, Bindings)}
+            </span>
+            <button
+                class="btn-primary"
+                onclick="{~"""
+                arizona.sendEventTo('{arizona_template:get_binding(id, Bindings)}', 'increment')
+                """}"
+            >
+                +
+            </button>
+        </div>
+        """).
+
+    handle_event(~"increment", _Params, State) ->
+        Count = arizona_stateful:get_binding(count, State),
+        UpdatedState = arizona_stateful:put_binding(count, Count + 1, State),
+        {noreply, UpdatedState}.
+    """".
 
 %% Performance stats component
 performance_stats() ->
