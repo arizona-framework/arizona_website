@@ -20,10 +20,8 @@ render(Bindings) ->
             end
         }
     </head>
-    <body class="bg-gray-100 min-h-screen">
-        <div class="container mx-auto px-4 py-8">
-            {arizona_template:render_slot(arizona_template:get_binding(main_content, Bindings))}
-        </div>
+    <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900 min-h-screen">
+        {arizona_template:render_slot(arizona_template:get_binding(main_content, Bindings))}
     </body>
     </html>
     """").

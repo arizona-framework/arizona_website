@@ -33,6 +33,9 @@ routes() ->
         {asset, ~"/assets/main.js", {priv_file, arizona_web, ~"static/assets/main.js"}},
         {asset, ~"/assets/app.css", {priv_file, arizona_web, ~"static/assets/app.css"}},
         {asset, ~"/assets", {priv_dir, arizona, ~"static/assets"}},
+        {asset, ~"/images/arizona_256x256.jpeg", {priv_file, arizona_web, ~"static/images/arizona_256x256.jpeg"}},
+        {asset, ~"/images/arizona_512x512.jpeg", {priv_file, arizona_web, ~"static/images/arizona_512x512.jpeg"}},
+        {asset, ~"/images", {priv_dir, arizona_web, ~"static/images"}},
         {websocket, ~"/live"},
         {view, ~"/", arizona_web_view, {arizona_web_page_home, #{name => ~"World"}}}
     ].
