@@ -17,7 +17,9 @@ generate() ->
             ~"/" => #{parallel => true},
             ~"/favicon.ico" => #{parallel => true},
             ~"/robots.txt" => #{parallel => true},
-            ~"/assets/app.css" => #{parallel => true}
+            ~"/assets/app.css" => #{parallel => true},
+            ~"/images/arizona_256x256.jpeg" => #{parallel => true},
+            ~"/images/arizona_512x512.jpeg" => #{parallel => true}
         },
         output_dir => OutputDir
     },
