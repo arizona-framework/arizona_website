@@ -1,0 +1,12 @@
+{application, arizona_web, [
+    {description, "An Arizona application"},
+    {vsn, "0.1.0"},
+    {mod, {arizona_web_app, []}},
+    {applications, [
+        kernel,
+        stdlib,
+        arizona
+    ]},
+    {licenses, ["Apache-2.0"]},
+    {links, []}
+]}.
