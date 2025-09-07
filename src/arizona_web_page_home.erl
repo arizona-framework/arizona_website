@@ -29,18 +29,27 @@ header() ->
         <nav class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <img src="images/arizona_256x256.jpeg" alt="Arizona Framework" class="h-10 w-10 rounded-lg shadow-lg">
+                    {arizona_template:render_stateless(arizona_web_components, arizona_image, #{
+                        type => logo,
+                        size => medium,
+                        alt => ~"Arizona Framework",
+                        classes => ~"h-10 w-10 rounded-lg shadow-lg"
+                    })}
                     <div>
                         <h1 class="text-xl font-bold text-pearl">Arizona</h1>
                         <p class="text-xs text-arizona-terracotta">Real-time Web Framework</p>
                     </div>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#features" class="text-silver hover:text-arizona-teal transition-colors duration-300">Features</a>
-                    <a href="#examples" class="text-silver hover:text-arizona-teal transition-colors duration-300">Examples</a>
-                    <a href="https://github.com/arizona-framework/arizona" target="_blank" rel="noopener noreferrer" class="bg-arizona-terracotta hover:bg-arizona-mesa text-pearl px-4 py-2 rounded-lg font-medium transition-all duration-300 shadow-lg">
-                        GitHub
-                    </a>
+                    {arizona_template:render_stateless(arizona_web_components, nav_link, #{href => ~"#features", text => ~"Features"})}
+                    {arizona_template:render_stateless(arizona_web_components, nav_link, #{href => ~"#examples", text => ~"Examples"})}
+                    {arizona_template:render_stateless(arizona_web_components, nav_link, #{
+                        href => ~"https://github.com/arizona-framework/arizona",
+                        text => ~"GitHub",
+                        target => ~"_blank",
+                        rel => ~"noopener noreferrer",
+                        extra_classes => ~"bg-arizona-terracotta hover:bg-arizona-mesa text-pearl px-4 py-2 rounded-lg font-medium transition-all duration-300 shadow-lg"
+                    })}
                 </div>
             </div>
         </nav>
@@ -55,7 +64,12 @@ hero() ->
             <!-- Large Arizona Logo -->
             <div class="flex justify-center mb-8">
                 <div class="relative">
-                    <img src="images/arizona_512x512.jpeg" alt="Arizona Framework Logo" class="h-32 w-32 lg:h-48 lg:w-48 rounded-2xl shadow-2xl shadow-arizona-terracotta/20 ring-4 ring-arizona-terracotta/30">
+                    {arizona_template:render_stateless(arizona_web_components, arizona_image, #{
+                        type => logo,
+                        size => large,
+                        alt => ~"Arizona Framework Logo",
+                        classes => ~"h-32 w-32 lg:h-48 lg:w-48 rounded-2xl shadow-2xl shadow-arizona-terracotta/20 ring-4 ring-arizona-terracotta/30"
+                    })}
                     <div class="absolute -inset-1 bg-gradient-to-r from-arizona-terracotta to-arizona-mesa rounded-2xl blur opacity-30"></div>
                 </div>
             </div>
@@ -85,12 +99,8 @@ hero() ->
 
             <!-- CTA Buttons -->
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <button class="bg-gradient-to-r from-arizona-terracotta to-arizona-mesa hover:from-arizona-mesa hover:to-arizona-terracotta text-pearl font-bold py-4 px-8 rounded-xl shadow-2xl shadow-arizona-terracotta/25 transition-all duration-300 transform hover:scale-105">
-                    Get Started
-                </button>
-                <button class="bg-charcoal/50 hover:bg-slate/50 text-pearl font-semibold py-4 px-8 rounded-xl border border-slate transition-all duration-300 backdrop-blur-sm">
-                    View Documentation
-                </button>
+                {arizona_template:render_stateless(arizona_web_components, cta_button, #{text => ~"Get Started", type => primary})}
+                {arizona_template:render_stateless(arizona_web_components, cta_button, #{text => ~"View Documentation", type => secondary})}
             </div>
         </div>
     </section>
@@ -106,44 +116,23 @@ features() ->
             </h2>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Real-time Updates -->
-                <div class="bg-charcoal/50 backdrop-blur-sm rounded-xl p-8 border border-slate hover:border-arizona-teal/50 transition-all duration-300">
-                    <div class="bg-gradient-to-r from-arizona-terracotta to-arizona-mesa w-12 h-12 rounded-lg flex items-center justify-center mb-6">
-                        <svg class="h-6 w-6 text-pearl" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-pearl mb-4">Real-time Updates</h3>
-                    <p class="text-silver">
-                        Built-in PubSub system enables real-time updates across connected clients with automatic DOM synchronization.
-                    </p>
-                </div>
+                {arizona_template:render_stateless(arizona_web_components, feature_card, #{
+                    icon => arizona_template:render_stateless(arizona_web_components, svg_icon, #{type => lightning}),
+                    title => ~"Real-time Updates",
+                    description => ~"Built-in PubSub system enables real-time updates across connected clients with automatic DOM synchronization."
+                })}
 
-                <!-- BEAM Performance -->
-                <div class="bg-charcoal/50 backdrop-blur-sm rounded-xl p-8 border border-slate hover:border-arizona-teal/50 transition-all duration-300">
-                    <div class="bg-gradient-to-r from-arizona-terracotta to-arizona-mesa w-12 h-12 rounded-lg flex items-center justify-center mb-6">
-                        <svg class="h-6 w-6 text-pearl" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-pearl mb-4">BEAM Performance</h3>
-                    <p class="text-silver">
-                        Built on Erlang/OTP, Arizona inherits the legendary fault-tolerance, concurrency, and performance of the BEAM virtual machine.
-                    </p>
-                </div>
+                {arizona_template:render_stateless(arizona_web_components, feature_card, #{
+                    icon => arizona_template:render_stateless(arizona_web_components, svg_icon, #{type => chart}),
+                    title => ~"BEAM Performance",
+                    description => ~"Built on Erlang/OTP, Arizona inherits the legendary fault-tolerance, concurrency, and performance of the BEAM virtual machine."
+                })}
 
-                <!-- Developer Experience -->
-                <div class="bg-charcoal/50 backdrop-blur-sm rounded-xl p-8 border border-slate hover:border-arizona-teal/50 transition-all duration-300">
-                    <div class="bg-gradient-to-r from-arizona-terracotta to-arizona-mesa w-12 h-12 rounded-lg flex items-center justify-center mb-6">
-                        <svg class="h-6 w-6 text-pearl" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                        </svg>
-                    </div>
-                    <h3 class="text-xl font-bold text-pearl mb-4">Developer Experience</h3>
-                    <p class="text-silver">
-                        Clean template syntax, hot code reloading, and comprehensive development tools make building web applications a joy.
-                    </p>
-                </div>
+                {arizona_template:render_stateless(arizona_web_components, feature_card, #{
+                    icon => arizona_template:render_stateless(arizona_web_components, svg_icon, #{type => code}),
+                    title => ~"Developer Experience",
+                    description => ~"Clean template syntax, hot code reloading, and comprehensive development tools make building web applications a joy."
+                })}
             </div>
         </div>
     </section>
@@ -212,23 +201,23 @@ performance_stats() ->
             </h2>
 
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-charcoal/50 backdrop-blur-sm rounded-xl p-8 border border-slate">
-                    <div class="text-4xl font-bold text-arizona-teal mb-2">Millions</div>
-                    <div class="text-pearl font-semibold mb-2">Lightweight Processes</div>
-                    <div class="text-silver">BEAM VM capability</div>
-                </div>
+                {arizona_template:render_stateless(arizona_web_components, stat_card, #{
+                    value => ~"Millions",
+                    label => ~"Lightweight Processes",
+                    description => ~"BEAM VM capability"
+                })}
 
-                <div class="bg-charcoal/50 backdrop-blur-sm rounded-xl p-8 border border-slate">
-                    <div class="text-4xl font-bold text-arizona-teal mb-2">Instant</div>
-                    <div class="text-pearl font-semibold mb-2">Hot Reloading</div>
-                    <div class="text-silver">Zero downtime updates</div>
-                </div>
+                {arizona_template:render_stateless(arizona_web_components, stat_card, #{
+                    value => ~"Instant",
+                    label => ~"Hot Reloading",
+                    description => ~"Zero downtime updates"
+                })}
 
-                <div class="bg-charcoal/50 backdrop-blur-sm rounded-xl p-8 border border-slate">
-                    <div class="text-4xl font-bold text-arizona-teal mb-2">Fault-Tolerant</div>
-                    <div class="text-pearl font-semibold mb-2">By Design</div>
-                    <div class="text-silver">Let it crash philosophy</div>
-                </div>
+                {arizona_template:render_stateless(arizona_web_components, stat_card, #{
+                    value => ~"Fault-Tolerant",
+                    label => ~"By Design",
+                    description => ~"Let it crash philosophy"
+                })}
             </div>
         </div>
     </section>
@@ -240,7 +229,12 @@ footer() ->
     <footer class="py-12 px-6 border-t border-slate bg-obsidian bg-opacity-50">
         <div class="container mx-auto text-center">
             <div class="flex items-center justify-center space-x-3 mb-6">
-                <img src="images/arizona_256x256.jpeg" alt="Arizona Framework" class="h-8 w-8 rounded-lg">
+                {arizona_template:render_stateless(arizona_web_components, arizona_image, #{
+                    type => logo,
+                    size => small,
+                    alt => ~"Arizona Framework",
+                    classes => ~"h-8 w-8 rounded-lg"
+                })}
                 <span class="text-pearl font-bold text-lg">Arizona Framework</span>
             </div>
 
@@ -249,15 +243,14 @@ footer() ->
             </p>
 
             <div class="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">
-                <a href="https://github.com/arizona-framework/arizona" target="_blank" rel="noopener noreferrer" class="text-silver hover:text-arizona-teal transition-colors duration-300">
-                    GitHub
-                </a>
-                <a href="#" class="text-silver hover:text-arizona-teal transition-colors duration-300">
-                    Documentation
-                </a>
-                <a href="#" class="text-silver hover:text-arizona-teal transition-colors duration-300">
-                    Community
-                </a>
+                {arizona_template:render_stateless(arizona_web_components, nav_link, #{
+                    href => ~"https://github.com/arizona-framework/arizona",
+                    text => ~"GitHub",
+                    target => ~"_blank",
+                    rel => ~"noopener noreferrer"
+                })}
+                {arizona_template:render_stateless(arizona_web_components, nav_link, #{href => ~"#", text => ~"Documentation"})}
+                {arizona_template:render_stateless(arizona_web_components, nav_link, #{href => ~"#", text => ~"Community"})}
             </div>
 
             <div class="mt-8 pt-8 border-t border-slate text-center">
