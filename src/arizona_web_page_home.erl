@@ -24,7 +24,7 @@ render(Bindings) ->
 
 %% Header navigation component - pure function, no bindings needed
 header() ->
-    arizona_template:from_string(~"""
+    arizona_template:from_string(~""""
     <header class="relative z-10 bg-obsidian bg-opacity-20 backdrop-blur-sm border-b border-slate">
         <nav class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
@@ -41,20 +41,32 @@ header() ->
                     </div>
                 </div>
                 <div class="hidden md:flex items-center space-x-8">
-                    {arizona_template:render_stateless(arizona_web_components, nav_link, #{href => ~"#features", text => ~"Features"})}
-                    {arizona_template:render_stateless(arizona_web_components, nav_link, #{href => ~"#examples", text => ~"Examples"})}
-                    {arizona_template:render_stateless(arizona_web_components, nav_link, #{
-                        href => ~"https://github.com/arizona-framework/arizona",
-                        text => ~"GitHub",
-                        target => ~"_blank",
-                        rel => ~"noopener noreferrer",
-                        extra_classes => ~"bg-arizona-terracotta hover:bg-arizona-mesa text-pearl px-4 py-2 rounded-lg font-medium transition-all duration-300 shadow-lg"
-                    })}
+                    {arizona_template:render_list(fun(Link) ->
+                        arizona_template:from_string(~"""
+                        {arizona_template:render_stateless(arizona_web_components, nav_link, Link)}
+                        """)
+                    end, header_links())}
                 </div>
             </div>
         </nav>
     </header>
-    """).
+    """").
+
+header_links() ->
+    [
+        #{href => ~"#features", text => ~"Features"},
+        #{href => ~"#examples", text => ~"Examples"},
+        #{
+            href => ~"https://github.com/arizona-framework/arizona",
+            text => ~"GitHub",
+            target => ~"_blank",
+            rel => ~"noopener noreferrer",
+            extra_classes => [
+                ~"bg-arizona-terracotta hover:bg-arizona-mesa text-pearl px-4 py-2 ",
+                "rounded-lg font-medium transition-all duration-300 shadow-lg"
+            ]
+        }
+    ].
 
 %% Hero section component
 hero() ->
@@ -108,7 +120,7 @@ hero() ->
 
 %% Features section component
 features() ->
-    arizona_template:from_string(~"""
+    arizona_template:from_string(~""""
     <section id="features" class="py-20 px-6 bg-obsidian bg-opacity-30">
         <div class="container mx-auto">
             <h2 class="text-4xl font-bold text-pearl text-center mb-16">
@@ -116,27 +128,34 @@ features() ->
             </h2>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {arizona_template:render_stateless(arizona_web_components, feature_card, #{
-                    icon => arizona_template:render_stateless(arizona_web_components, svg_icon, #{type => lightning}),
-                    title => ~"Real-time Updates",
-                    description => ~"Built-in PubSub system enables real-time updates across connected clients with automatic DOM synchronization."
-                })}
-
-                {arizona_template:render_stateless(arizona_web_components, feature_card, #{
-                    icon => arizona_template:render_stateless(arizona_web_components, svg_icon, #{type => chart}),
-                    title => ~"BEAM Performance",
-                    description => ~"Built on Erlang/OTP, Arizona inherits the legendary fault-tolerance, concurrency, and performance of the BEAM virtual machine."
-                })}
-
-                {arizona_template:render_stateless(arizona_web_components, feature_card, #{
-                    icon => arizona_template:render_stateless(arizona_web_components, svg_icon, #{type => code}),
-                    title => ~"Developer Experience",
-                    description => ~"Clean template syntax, hot code reloading, and comprehensive development tools make building web applications a joy."
-                })}
+                {arizona_template:render_list(fun(Feature) ->
+                    arizona_template:from_string(~"""
+                    {arizona_template:render_stateless(arizona_web_components, feature_card, Feature)}
+                    """)
+                end, feature_list())}
             </div>
         </div>
     </section>
-    """).
+    """").
+
+feature_list() ->
+    [
+        #{
+            icon => arizona_template:render_stateless(arizona_web_components, svg_icon, #{type => lightning}),
+            title => ~"Real-time Updates",
+            description => ~"Built-in PubSub system enables real-time updates across connected clients with automatic DOM synchronization."
+        },
+        #{
+            icon => arizona_template:render_stateless(arizona_web_components, svg_icon, #{type => chart}),
+            title => ~"BEAM Performance",
+            description => ~"Built on Erlang/OTP, Arizona inherits the legendary fault-tolerance, concurrency, and performance of the BEAM virtual machine."
+        },
+        #{
+            icon => arizona_template:render_stateless(arizona_web_components, svg_icon, #{type => code}),
+            title => ~"Developer Experience",
+            description => ~"Clean template syntax, hot code reloading, and comprehensive development tools make building web applications a joy."
+        }
+    ].
 
 %% Code example component
 code_example() ->
@@ -193,7 +212,7 @@ code_example() ->
 
 %% Performance stats component
 performance_stats() ->
-    arizona_template:from_string(~"""
+    arizona_template:from_string(~""""
     <section class="py-20 px-6 bg-obsidian bg-opacity-30">
         <div class="container mx-auto text-center">
             <h2 class="text-4xl font-bold text-pearl mb-16">
@@ -201,31 +220,38 @@ performance_stats() ->
             </h2>
 
             <div class="grid md:grid-cols-3 gap-8">
-                {arizona_template:render_stateless(arizona_web_components, stat_card, #{
-                    value => ~"Millions",
-                    label => ~"Lightweight Processes",
-                    description => ~"BEAM VM capability"
-                })}
-
-                {arizona_template:render_stateless(arizona_web_components, stat_card, #{
-                    value => ~"Instant",
-                    label => ~"Hot Reloading",
-                    description => ~"Zero downtime updates"
-                })}
-
-                {arizona_template:render_stateless(arizona_web_components, stat_card, #{
-                    value => ~"Fault-Tolerant",
-                    label => ~"By Design",
-                    description => ~"Let it crash philosophy"
-                })}
+                {arizona_template:render_list(fun(Stat) ->
+                    arizona_template:from_string(~"""
+                    {arizona_template:render_stateless(arizona_web_components, stat_card, Stat)}
+                    """)
+                end, performance_stats_list())}
             </div>
         </div>
     </section>
-    """).
+    """").
+
+performance_stats_list() ->
+    [
+        #{
+            value => ~"Millions",
+            label => ~"Lightweight Processes",
+            description => ~"BEAM VM capability"
+        },
+        #{
+            value => ~"Instant",
+            label => ~"Hot Reloading",
+            description => ~"Zero downtime updates"
+        },
+        #{
+            value => ~"Fault-Tolerant",
+            label => ~"By Design",
+            description => ~"Let it crash philosophy"
+        }
+    ].
 
 %% Footer component
 footer() ->
-    arizona_template:from_string(~"""
+    arizona_template:from_string(~""""
     <footer class="py-12 px-6 border-t border-slate bg-obsidian bg-opacity-50">
         <div class="container mx-auto text-center">
             <div class="flex items-center justify-center space-x-3 mb-6">
@@ -243,14 +269,11 @@ footer() ->
             </p>
 
             <div class="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">
-                {arizona_template:render_stateless(arizona_web_components, nav_link, #{
-                    href => ~"https://github.com/arizona-framework/arizona",
-                    text => ~"GitHub",
-                    target => ~"_blank",
-                    rel => ~"noopener noreferrer"
-                })}
-                {arizona_template:render_stateless(arizona_web_components, nav_link, #{href => ~"#", text => ~"Documentation"})}
-                {arizona_template:render_stateless(arizona_web_components, nav_link, #{href => ~"#", text => ~"Community"})}
+                {arizona_template:render_list(fun(Link) ->
+                    arizona_template:from_string(~"""
+                    {arizona_template:render_stateless(arizona_web_components, nav_link, Link)}
+                    """)
+                end, footer_links())}
             </div>
 
             <div class="mt-8 pt-8 border-t border-slate text-center">
@@ -261,4 +284,16 @@ footer() ->
             </div>
         </div>
     </footer>
-    """).
+    """").
+
+footer_links() ->
+    [
+        #{
+            href => ~"https://github.com/arizona-framework/arizona",
+            text => ~"GitHub",
+            target => ~"_blank",
+            rel => ~"noopener noreferrer"
+        },
+        #{href => ~"#", text => ~"Documentation"},
+        #{href => ~"#", text => ~"Community"}
+    ].
