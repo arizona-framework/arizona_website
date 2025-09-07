@@ -70,7 +70,7 @@ header_links() ->
 
 %% Hero section component
 hero() ->
-    arizona_template:from_string(~"""
+    arizona_template:from_string(~""""
     <section class="relative py-20 lg:py-32 px-6">
         <div class="container mx-auto text-center">
             <!-- Large Arizona Logo -->
@@ -80,43 +80,72 @@ hero() ->
                         type => logo,
                         size => large,
                         alt => ~"Arizona Framework Logo",
-                        classes => ~"h-32 w-32 lg:h-48 lg:w-48 rounded-2xl shadow-2xl shadow-arizona-terracotta/20 ring-4 ring-arizona-terracotta/30"
+                        classes => [
+                            ~"h-32 w-32 lg:h-48 lg:w-48 rounded-2xl shadow-2xl shadow-arizona-terracotta/20 ",
+                            ~"ring-4 ring-arizona-terracotta/30"
+                        ]
                     })}
-                    <div class="absolute -inset-1 bg-gradient-to-r from-arizona-terracotta to-arizona-mesa rounded-2xl blur opacity-30"></div>
+                    <div class="{[
+                        ~"absolute -inset-1 bg-gradient-to-r from-arizona-terracotta ",
+                        ~"to-arizona-mesa rounded-2xl blur opacity-30"
+                    ]}"></div>
                 </div>
             </div>
 
             <!-- Compelling Headlines -->
             <h1 class="text-4xl lg:text-7xl font-bold text-pearl mb-6 leading-tight">
-                Build <span class="bg-gradient-to-r from-arizona-teal to-arizona-terracotta bg-clip-text text-transparent">Real-time</span>
+                Build <span class="{[
+                    ~"bg-gradient-to-r from-arizona-teal to-arizona-terracotta ",
+                    ~"bg-clip-text text-transparent"
+                ]}">Real-time</span>
                 <br>Web Applications
             </h1>
 
             <p class="text-xl lg:text-2xl text-silver mb-8 max-w-4xl mx-auto leading-relaxed">
-                Arizona is a modern Erlang web framework that delivers <strong class="text-arizona-teal">real-time interactivity</strong>
+                Arizona is a modern Erlang web framework that delivers
+                <strong class="text-arizona-teal">real-time interactivity</strong>
                 with the rock-solid reliability of the BEAM virtual machine.
             </p>
 
             <!-- Work in Progress Warning -->
-            <div class="bg-gradient-to-r from-arizona-gold/20 to-arizona-terracotta/20 border border-arizona-gold/50 rounded-xl p-6 mb-12 max-w-2xl mx-auto backdrop-blur-sm">
+            <div class="{[
+                ~"bg-gradient-to-r from-arizona-gold/20 to-arizona-terracotta/20 border border-arizona-gold/50 ",
+                ~"rounded-xl p-6 mb-12 max-w-2xl mx-auto backdrop-blur-sm"
+            ]}">
                 <div class="flex items-center justify-center space-x-3 mb-3">
                     <div class="text-arizona-gold text-2xl">⚠️</div>
                     <h3 class="text-lg font-semibold text-arizona-gold">Work in Progress</h3>
                 </div>
                 <p class="text-silver text-sm leading-relaxed">
-                    Arizona is currently in active development. This framework is experimental and not yet ready for production use.
-                    <br><a href="https://github.com/arizona-framework/arizona" class="text-arizona-gold hover:text-arizona-sage underline transition-colors">Follow our progress and contribute at GitHub</a>.
+                    Arizona is currently in active development. This framework is experimental
+                    and not yet ready for production use.
+                    <br>
+                    <a
+                        href="https://github.com/arizona-framework/arizona"
+                        class="text-arizona-gold hover:text-arizona-sage underline transition-colors"
+                    >
+                        Follow our progress and contribute at GitHub
+                    </a>.
                 </p>
             </div>
 
             <!-- CTA Buttons -->
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                {arizona_template:render_stateless(arizona_web_components, cta_button, #{text => ~"Get Started", type => primary})}
-                {arizona_template:render_stateless(arizona_web_components, cta_button, #{text => ~"View Documentation", type => secondary})}
+                {arizona_template:render_list(fun(Button) ->
+                    arizona_template:from_string(~"""
+                    {arizona_template:render_stateless(arizona_web_components, cta_button, Button)}
+                    """)
+                end, cta_buttons())}
             </div>
         </div>
     </section>
-    """).
+    """").
+
+cta_buttons() ->
+    [
+        #{text => ~"Get Started", type => primary},
+        #{text => ~"View Documentation", type => secondary}
+    ].
 
 %% Features section component
 features() ->
@@ -143,17 +172,26 @@ feature_list() ->
         #{
             icon => arizona_template:render_stateless(arizona_web_components, svg_icon, #{type => lightning}),
             title => ~"Real-time Updates",
-            description => ~"Built-in PubSub system enables real-time updates across connected clients with automatic DOM synchronization."
+            description => [
+                ~"Built-in PubSub system enables real-time updates across connected ",
+                ~"clients with automatic DOM synchronization."
+            ]
         },
         #{
             icon => arizona_template:render_stateless(arizona_web_components, svg_icon, #{type => chart}),
             title => ~"BEAM Performance",
-            description => ~"Built on Erlang/OTP, Arizona inherits the legendary fault-tolerance, concurrency, and performance of the BEAM virtual machine."
+            description => [
+                ~"Built on Erlang/OTP, Arizona inherits the legendary fault-tolerance, ",
+                ~"concurrency, and performance of the BEAM virtual machine."
+            ]
         },
         #{
             icon => arizona_template:render_stateless(arizona_web_components, svg_icon, #{type => code}),
             title => ~"Developer Experience",
-            description => ~"Clean template syntax, hot code reloading, and comprehensive development tools make building web applications a joy."
+            description => [
+                ~"Clean template syntax, hot code reloading, and comprehensive development ",
+                ~"tools make building web applications a joy."
+            ]
         }
     ].
 

@@ -12,8 +12,14 @@
 %% Feature card component - used 3 times in features section
 feature_card(Bindings) ->
     arizona_template:from_string(~"""
-    <div class="bg-charcoal/50 backdrop-blur-sm rounded-xl p-8 border border-slate hover:border-arizona-teal/50 transition-all duration-300">
-        <div class="bg-gradient-to-r from-arizona-terracotta to-arizona-mesa w-12 h-12 rounded-lg flex items-center justify-center mb-6">
+    <div class="{[
+        ~"bg-charcoal/50 backdrop-blur-sm rounded-xl p-8 border border-slate ",
+        ~"hover:border-arizona-teal/50 transition-all duration-300"
+    ]}">
+        <div class="{[
+            ~"bg-gradient-to-r from-arizona-terracotta to-arizona-mesa w-12 h-12 ",
+            ~"rounded-lg flex items-center justify-center mb-6"
+        ]}">
             {arizona_template:get_binding(icon, Bindings)}
         </div>
         <h3 class="text-xl font-bold text-pearl mb-4">
@@ -85,7 +91,10 @@ cta_button(Bindings) ->
     """).
 
 button_classes(primary) ->
-    ~"bg-gradient-to-r from-arizona-terracotta to-arizona-mesa hover:from-arizona-mesa hover:to-arizona-terracotta text-pearl shadow-2xl shadow-arizona-terracotta/25 transform hover:scale-105";
+    [
+        ~"bg-gradient-to-r from-arizona-terracotta to-arizona-mesa hover:from-arizona-mesa ",
+        ~"hover:to-arizona-terracotta text-pearl shadow-2xl shadow-arizona-terracotta/25 transform hover:scale-105"
+    ];
 button_classes(secondary) ->
     ~"bg-charcoal/50 hover:bg-slate/50 text-pearl font-semibold border border-slate backdrop-blur-sm".
 
@@ -93,19 +102,33 @@ button_classes(secondary) ->
 svg_icon(Bindings) ->
     arizona_template:from_string(~"""
     <svg class="h-6 w-6 text-pearl" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{icon_path(arizona_template:get_binding(type, Bindings))}" />
+        <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="{icon_path(arizona_template:get_binding(type, Bindings))}"
+        />
     </svg>
     """).
 
-icon_path(lightning) -> ~"M13 10V3L4 14h7v7l9-11h-7z";
-icon_path(chart) -> ~"M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z";
-icon_path(code) -> ~"M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4".
+icon_path(lightning) ->
+    ~"M13 10V3L4 14h7v7l9-11h-7z";
+icon_path(chart) ->
+    [
+        ~"M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 ",
+        ~"2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+    ];
+icon_path(code) ->
+    ~"M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4".
 
 %% Arizona image component - resolves image paths
 arizona_image(Bindings) ->
     arizona_template:from_string(~"""
     <img
-        src="{arizona_image_path(arizona_template:get_binding(type, Bindings), arizona_template:get_binding(size, Bindings))}"
+        src="{arizona_image_path(
+            arizona_template:get_binding(type, Bindings),
+            arizona_template:get_binding(size, Bindings)
+        )}"
         alt="{arizona_template:get_binding(alt, Bindings)}"
         class="{arizona_template:get_binding(classes, Bindings)}"
     >
