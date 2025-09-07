@@ -52,10 +52,9 @@ nav_link(Bindings) ->
     arizona_template:from_string(~"""
     <a
         href="{arizona_template:get_binding(href, Bindings)}"
-        class="{[
-            ~"text-silver hover:text-arizona-teal transition-colors duration-300",
-            arizona_template:get_binding(extra_classes, Bindings, fun() -> ~"" end)
-        ]}"
+        class="{arizona_template:get_binding(classes, Bindings, fun() ->
+            ~"text-silver hover:text-arizona-teal transition-colors duration-300"
+        end)}"
         {
             case arizona_template:find_binding(target, Bindings) of
                 {ok, Target} ->

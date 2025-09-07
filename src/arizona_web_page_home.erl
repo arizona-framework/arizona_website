@@ -61,9 +61,10 @@ header_links() ->
             text => ~"GitHub",
             target => ~"_blank",
             rel => ~"noopener noreferrer",
-            extra_classes => [
-                ~"bg-arizona-terracotta hover:bg-arizona-mesa text-pearl px-4 py-2 ",
-                "rounded-lg font-medium transition-all duration-300 shadow-lg"
+            classes => [
+                ~"font-bold py-2 px-4 rounded-xl transition-all duration-300 bg-gradient-to-r ",
+                ~"from-arizona-terracotta to-arizona-mesa hover:from-arizona-mesa hover:to-arizona-terracotta ",
+                ~"text-pearl shadow-2xl shadow-arizona-terracotta/25 transform hover:scale-105"
             ]
         }
     ].
