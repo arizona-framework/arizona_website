@@ -8,7 +8,7 @@ mount(Bindings) ->
     arizona_stateful:new(?MODULE, Bindings).
 
 render(Bindings) ->
-    arizona_template:from_string(~""""
+    arizona_template:from_string(~"""
     <div
         id="{arizona_template:get_binding(id, Bindings)}"
         class="min-h-screen bg-gradient-to-br from-obsidian via-charcoal to-arizona-terracotta"
@@ -20,7 +20,7 @@ render(Bindings) ->
         {performance_stats()}
         {footer()}
     </div>
-    """").
+    """).
 
 %% Header navigation component - pure function, no bindings needed
 header() ->
