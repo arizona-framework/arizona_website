@@ -81,7 +81,7 @@ cta_button(Bindings) ->
     ButtonType = arizona_template:get_binding(type, Bindings, fun() -> primary end),
     arizona_template:from_string(~"""
     <button class="{[
-        ~"font-bold py-4 px-8 rounded-xl transition-all duration-300 ",
+        ~"font-bold py-4 px-8 rounded-xl transition-all duration-300 cursor-pointer ",
         button_classes(ButtonType),
         arizona_template:get_binding(extra_classes, Bindings, fun() -> ~"" end)
     ]}">
