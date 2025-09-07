@@ -9,11 +9,12 @@ render(Bindings) ->
     <head>
         <title>{arizona_template:get_binding(title, Bindings)}</title>
         <link rel="stylesheet" href="assets/app.css">
+        <script src="assets/prism.js"></script>
         {
             case arizona_template:get_binding(env, Bindings, fun() -> prod end) of
                 dev ->
                     ~"""
-                    <script src="assets/main.js" type="module" async></script>
+                    <script src="assets/dev.js" type="module" async></script>
                     """;
                 prod ->
                     ~""

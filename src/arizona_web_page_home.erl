@@ -207,11 +207,11 @@ code_example() ->
 
                 <div class="bg-obsidian bg-opacity-80 rounded-xl overflow-hidden border border-slate shadow-2xl">
                     <div class="bg-charcoal px-4 py-2 border-b border-slate flex items-center">
-                        <span class="text-silver text-sm">counter_view.erl</span>
+                        <span class="text-silver text-sm">counter.erl</span>
                     </div>
-                    <div class="p-6">
-                        <pre class="text-arizona-teal text-sm leading-relaxed overflow-x-auto">
-                            <code>
+                    <div>
+                        <pre class="text-sm leading-relaxed overflow-x-auto" style="margin: 0;">
+                            <code class="language-erlang">
     {                           % Code is flush-left to align with closing triple-quotes
                                 % preserving proper indentation in the example output
                                 html_encode(example())}
@@ -263,9 +263,10 @@ example() ->
             </span>
             <button
                 class="btn-primary"
-                onclick="{~"""
-                arizona.sendEventTo('{arizona_template:get_binding(id, Bindings)}', 'increment')
-                """}"
+                onclick="arizona.sendEventTo(
+                    '{arizona_template:get_binding(id, Bindings)}',
+                    'increment'
+                )"
             >
                 +
             </button>
