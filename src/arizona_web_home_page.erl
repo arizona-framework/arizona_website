@@ -25,7 +25,7 @@ render(Bindings) ->
 %% Header navigation component - pure function, no bindings needed
 header() ->
     arizona_template:from_string(~""""
-    <header class="relative z-10 bg-obsidian bg-opacity-20 backdrop-blur-sm border-b border-slate">
+    <header class="sticky top-0 z-10 bg-obsidian bg-opacity-20 backdrop-blur-sm border-b border-slate shadow-lg">
         <nav class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
