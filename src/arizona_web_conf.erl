@@ -38,7 +38,7 @@ routes() ->
         {asset, ~"/images/arizona_512x512.jpeg", {priv_file, arizona_web, ~"static/images/arizona_512x512.jpeg"}},
         {asset, ~"/images", {priv_dir, arizona_web, ~"static/images"}},
         {websocket, ~"/live"},
-        {view, ~"/", arizona_web_view, {arizona_web_page_home, #{name => ~"World"}}}
+        {view, ~"/", arizona_web_view, {arizona_web_home_page, #{}}}
     ].
 
 compile_erl(Files) ->

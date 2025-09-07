@@ -1,4 +1,4 @@
--module(arizona_web_page_home).
+-module(arizona_web_home_page).
 -behaviour(arizona_stateful).
 -compile({parse_transform, arizona_parse_transform}).
 -export([mount/1]).
