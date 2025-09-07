@@ -2,7 +2,7 @@
   "name": "Arizona Website",
   "type": "module",
   "scripts": {
-    "build-css": "npx tailwindcss -i ./assets/css/app.css -o ./priv/static/assets/app.css"
+    "build-css": "npx tailwindcss -i ./assets/css/app.css -o ./priv/static/assets/app.css --minify"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.1.13",
