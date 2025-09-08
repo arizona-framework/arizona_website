@@ -1,4 +1,4 @@
--module(arizona_web_layout).
+-module(arizona_website_layout).
 -compile({parse_transform, arizona_parse_transform}).
 -export([render/1]).
 
@@ -30,7 +30,7 @@ render(Bindings) ->
             ~"web framework with real-time interactivity and BEAM performance."
         ]}">
         <meta property="og:image" content="{[
-            ~"https://github.com/arizona-framework/arizona_web/raw/main",
+            ~"https://github.com/arizona-framework/arizona_website/raw/main",
             ~"/priv/static/images/arizona_512x512.jpeg"
         ]}">
 
@@ -43,7 +43,7 @@ render(Bindings) ->
             ~"web framework with real-time interactivity and BEAM performance."
         ]}">
         <meta property="twitter:image" content="{[
-            ~"https://github.com/arizona-framework/arizona_web/raw/main",
+            ~"https://github.com/arizona-framework/arizona_website/raw/main",
             ~"/priv/static/images/arizona_512x512.jpeg"
         ]}">
 

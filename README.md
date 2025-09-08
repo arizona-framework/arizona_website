@@ -1,6 +1,6 @@
-# arizona_web
+# arizona_website
 
-An Arizona application.
+Arizona Framework official website.
 
 ## Build
 

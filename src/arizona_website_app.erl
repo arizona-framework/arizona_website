@@ -1,4 +1,4 @@
--module(arizona_web_app).
+-module(arizona_website_app).
 -behaviour(application).
 
 -export([start/2]).
@@ -10,8 +10,8 @@
     StartRet :: {ok, pid()} | {error, term()}.
 start(_StartType, _StartArgs) ->
     maybe
-        {ok, SupPid} ?= arizona_web_sup:start_link(),
-        ok ?= arizona:start(arizona_web_conf:arizona()),
+        {ok, SupPid} ?= arizona_website_sup:start_link(),
+        ok ?= arizona:start(arizona_website_conf:arizona()),
         ok = io:format("Arizona app started at http://localhost:1912~n"),
         {ok, SupPid}
     else

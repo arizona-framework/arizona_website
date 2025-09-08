@@ -1,4 +1,4 @@
--module(arizona_web_conf).
+-module(arizona_website_conf).
 
 -export([arizona/0]).
 
@@ -28,18 +28,18 @@ arizona() ->
 
 routes() ->
     [
-        {asset, ~"/favicon.ico", {priv_file, arizona_web, ~"static/favicon.ico"}},
-        {asset, ~"/robots.txt", {priv_file, arizona_web, ~"static/robots.txt"}},
-        {asset, ~"/assets/main.js", {priv_file, arizona_web, ~"static/assets/main.js"}},
-        {asset, ~"/assets/prism.js", {priv_file, arizona_web, ~"static/assets/prism.js"}},
-        {asset, ~"/assets/dev.js", {priv_file, arizona_web, ~"static/assets/dev.js"}},
-        {asset, ~"/assets/app.css", {priv_file, arizona_web, ~"static/assets/app.css"}},
+        {asset, ~"/favicon.ico", {priv_file, arizona_website, ~"static/favicon.ico"}},
+        {asset, ~"/robots.txt", {priv_file, arizona_website, ~"static/robots.txt"}},
+        {asset, ~"/assets/main.js", {priv_file, arizona_website, ~"static/assets/main.js"}},
+        {asset, ~"/assets/prism.js", {priv_file, arizona_website, ~"static/assets/prism.js"}},
+        {asset, ~"/assets/dev.js", {priv_file, arizona_website, ~"static/assets/dev.js"}},
+        {asset, ~"/assets/app.css", {priv_file, arizona_website, ~"static/assets/app.css"}},
         {asset, ~"/assets", {priv_dir, arizona, ~"static/assets"}},
-        {asset, ~"/images/arizona_256x256.jpeg", {priv_file, arizona_web, ~"static/images/arizona_256x256.jpeg"}},
-        {asset, ~"/images/arizona_512x512.jpeg", {priv_file, arizona_web, ~"static/images/arizona_512x512.jpeg"}},
-        {asset, ~"/images", {priv_dir, arizona_web, ~"static/images"}},
+        {asset, ~"/images/arizona_256x256.jpeg", {priv_file, arizona_website, ~"static/images/arizona_256x256.jpeg"}},
+        {asset, ~"/images/arizona_512x512.jpeg", {priv_file, arizona_website, ~"static/images/arizona_512x512.jpeg"}},
+        {asset, ~"/images", {priv_dir, arizona_website, ~"static/images"}},
         {websocket, ~"/live"},
-        {view, ~"/", arizona_web_view, {arizona_web_home_page, #{}}}
+        {view, ~"/", arizona_website_view, {arizona_website_home_page, #{}}}
     ].
 
 compile_erl(Files) ->

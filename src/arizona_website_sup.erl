@@ -1,4 +1,4 @@
--module(arizona_web_sup).
+-module(arizona_website_sup).
 -behaviour(supervisor).
 
 -export([start_link/0]).

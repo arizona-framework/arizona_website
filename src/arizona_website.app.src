@@ -1,7 +1,7 @@
-{application, arizona_web, [
-    {description, "An Arizona application"},
+{application, arizona_website, [
+    {description, "Arizona Framework official website"},
     {vsn, "0.1.0"},
-    {mod, {arizona_web_app, []}},
+    {mod, {arizona_website_app, []}},
     {applications, [
         kernel,
         stdlib,
