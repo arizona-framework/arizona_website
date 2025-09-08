@@ -7,10 +7,9 @@ for building real-time web applications.
 
 ## Overview
 
-This project showcases the Arizona Framework's capabilities through an
-interactive website featuring:
+This project showcases the Arizona Framework's capabilities through a
+static website featuring:
 
-- **Real-time interactivity** with WebSocket-based updates
 - **Component-based architecture** with reusable UI components
 - **Static site generation** for deployment
 - **Responsive design** with Tailwind CSS
