@@ -23,7 +23,7 @@ render(Bindings) ->
 
         {% Open Graph / Facebook }
         <meta property="og:type" content="website">
-        <meta property="og:url" content="https://arizona-framework.github.io/">
+        <meta property="og:url" content="https://arizonaframework.org/">
         <meta property="og:title" content="Arizona Framework - Real-time Web Applications">
         <meta property="og:description" content="{[
             ~"Build real-time web applications with Erlang/OTP. Modern, fault-tolerant ",
@@ -36,7 +36,7 @@ render(Bindings) ->
 
         {% Twitter }
         <meta property="twitter:card" content="summary_large_image">
-        <meta property="twitter:url" content="https://arizona-framework.github.io/">
+        <meta property="twitter:url" content="https://arizonaframework.org/">
         <meta property="twitter:title" content="Arizona Framework - Real-time Web Applications">
         <meta property="twitter:description" content="{[
             ~"Build real-time web applications with Erlang/OTP. Modern, fault-tolerant ",
