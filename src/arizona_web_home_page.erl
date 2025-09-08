@@ -28,7 +28,7 @@ header() ->
     <header class="sticky top-0 z-10 bg-obsidian bg-opacity-20 backdrop-blur-sm border-b border-slate shadow-lg">
         <nav class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
+                <a href="/" class="flex items-center space-x-3 hover:opacity-80 transition-opacity duration-300">
                     {arizona_template:render_stateless(arizona_web_components, arizona_image, #{
                         type => logo,
                         size => medium,
@@ -39,7 +39,7 @@ header() ->
                         <h1 class="text-xl font-bold text-pearl">Arizona</h1>
                         <p class="text-xs text-arizona-terracotta">Real-time Web Framework</p>
                     </div>
-                </div>
+                </a>
                 <div class="hidden md:flex items-center space-x-8">
                     {arizona_template:render_list(fun(Link) ->
                         arizona_template:from_string(~"""
