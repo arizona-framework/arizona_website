@@ -1,5 +1,7 @@
 # Arizona Website
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/f52c6501-93d0-4298-91b9-4d8297b48823/deploy-status)](https://app.netlify.com/projects/arizonaframework/deploys)
+
 The official website for the Arizona Framework - a modern Erlang web framework
 for building real-time web applications.
 
