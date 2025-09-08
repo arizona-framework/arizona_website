@@ -139,6 +139,8 @@ arizona_image(Bindings) ->
         )}"
         alt="{arizona_template:get_binding(alt, Bindings)}"
         class="{arizona_template:get_binding(classes, Bindings)}"
+        loading="lazy"
+        decoding="async"
     >
     """).
 

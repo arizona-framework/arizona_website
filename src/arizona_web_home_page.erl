@@ -83,7 +83,7 @@ hero() ->
                         alt => ~"Arizona Framework Logo",
                         classes => [
                             ~"h-32 w-32 lg:h-48 lg:w-48 rounded-2xl shadow-2xl shadow-arizona-terracotta/20 ",
-                            ~"ring-4 ring-arizona-terracotta/30"
+                            ~"ring-4 ring-arizona-terracotta/30 hover:scale-105 transition-transform duration-300"
                         ]
                     })}
                     <div class="{[
