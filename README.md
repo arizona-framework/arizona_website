@@ -58,7 +58,7 @@ Generate a static version of the website:
 rebar3 shell --eval "arizona_website_static:generate(), init:stop()."
 ```
 
-The static site will be generated in the `site/` directory.
+The static site will be generated in the `dist/` directory.
 
 ## Project Structure
 

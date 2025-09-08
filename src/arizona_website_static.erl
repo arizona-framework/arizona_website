@@ -4,7 +4,7 @@
 generate() ->
     ok = application:set_env(arizona_website, env, prod),
     {ok, Cwd} = file:get_cwd(),
-    OutputDir = filename:join([Cwd, "site"]),
+    OutputDir = filename:join([Cwd, "dist"]),
     ok =
         case file:del_dir_r(OutputDir) of
             ok -> ok;
