@@ -1,0 +1,25 @@
+@import "tailwindcss";
+@import "./prism.css";
+
+@source "src/**/*.erl";
+
+@theme {
+  /* Arizona Brand Colors */
+  --color-arizona-terracotta: #D2691E;
+  --color-arizona-teal: #4A9B9B;
+  --color-arizona-gold: #F4A460;
+  --color-arizona-mesa: #B8460E;
+  --color-arizona-sage: #87A96B;
+  --color-arizona-sand: #D2B48C;
+
+  /* Dark Theme Neutrals */
+  --color-obsidian: #1A1A1A;
+  --color-charcoal: #2A2A2A;
+  --color-slate: #4A4A4A;
+  --color-silver: #B8B8B8;
+  --color-pearl: #E8E8E8;
+
+  /* Enhanced gradients */
+  --gradient-arizona: linear-gradient(135deg, var(--color-arizona-terracotta), var(--color-arizona-mesa));
+  --gradient-desert: linear-gradient(to bottom right, var(--color-obsidian), var(--color-charcoal), var(--color-arizona-terracotta));
+}
