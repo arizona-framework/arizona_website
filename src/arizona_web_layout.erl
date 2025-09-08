@@ -5,7 +5,7 @@
 render(Bindings) ->
     arizona_template:from_string(~""""
     <!DOCTYPE html>
-    <html class="scroll-smooth">
+    <html class="scroll-smooth" lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,6 +19,7 @@ render(Bindings) ->
             ~"functional programming, fault tolerance"
         ]}">
         <meta name="author" content="Arizona Framework Team">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
         {% Open Graph / Facebook }
         <meta property="og:type" content="website">

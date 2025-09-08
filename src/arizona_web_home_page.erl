@@ -207,16 +207,31 @@ feature_list() ->
 %% Code example component
 code_example() ->
     arizona_template:from_string(~""""
-    <section id="examples" class="py-20 px-6 opacity-0 translate-y-8 transition-all duration-700 animate-on-scroll">
+    <section
+        id="examples"
+        class="py-20 px-6 opacity-0 translate-y-8 transition-all duration-700 animate-on-scroll"
+    >
         <div class="container mx-auto">
             <div class="max-w-4xl mx-auto">
                 <h2 class="text-4xl font-bold text-pearl text-center mb-12">
                     See Arizona in <span class="text-arizona-teal">Action</span>
                 </h2>
 
-                <div class="bg-obsidian bg-opacity-80 rounded-xl overflow-hidden border border-slate shadow-2xl">
-                    <div class="bg-charcoal px-4 py-2 border-b border-slate flex items-center">
-                        <span class="text-silver text-sm">counter.erl</span>
+                <div class="{[
+                    ~"bg-obsidian bg-opacity-80 rounded-xl overflow-hidden border border-slate ",
+                    ~"shadow-2xl hover:border-arizona-teal/50 hover:shadow-arizona-teal/20 ",
+                    ~"transition-all duration-300 group"
+                ]}">
+                    <div class="{[
+                        ~"bg-charcoal px-4 py-2 border-b border-slate flex items-center ",
+                        ~"justify-between group-hover:bg-charcoal/80 transition-colors duration-300"
+                    ]}">
+                        <span class="{[
+                            ~"text-silver text-sm group-hover:text-arizona-teal transition-colors ",
+                            ~"duration-300"
+                        ]}">
+                            counter.erl
+                        </span>
                     </div>
                     <div>
                         <pre class="text-sm leading-relaxed overflow-x-auto" style="margin: 0;">
