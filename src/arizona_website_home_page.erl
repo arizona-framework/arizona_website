@@ -1,4 +1,4 @@
--module(arizona_web_home_page).
+-module(arizona_website_home_page).
 -behaviour(arizona_stateful).
 -compile({parse_transform, arizona_parse_transform}).
 -export([mount/1]).
@@ -31,7 +31,7 @@ header() ->
         <nav class="container mx-auto px-6 py-4">
             <div class="flex items-center justify-between">
                 <a href="/" class="flex items-center space-x-3 hover:opacity-80 transition-opacity duration-300">
-                    {arizona_template:render_stateless(arizona_web_components, arizona_image, #{
+                    {arizona_template:render_stateless(arizona_website_components, arizona_image, #{
                         type => logo,
                         size => medium,
                         alt => ~"Arizona Framework",
@@ -45,7 +45,7 @@ header() ->
                 <div class="hidden md:flex items-center space-x-8">
                     {arizona_template:render_list(fun(Link) ->
                         arizona_template:from_string(~"""
-                        {arizona_template:render_stateless(arizona_web_components, nav_link, Link)}
+                        {arizona_template:render_stateless(arizona_website_components, nav_link, Link)}
                         """)
                     end, header_links())}
                 </div>
@@ -79,7 +79,7 @@ hero() ->
             <!-- Large Arizona Logo -->
             <div class="flex justify-center mb-8">
                 <div class="relative">
-                    {arizona_template:render_stateless(arizona_web_components, arizona_image, #{
+                    {arizona_template:render_stateless(arizona_website_components, arizona_image, #{
                         type => logo,
                         size => large,
                         alt => ~"Arizona Framework Logo",
@@ -136,7 +136,7 @@ hero() ->
             <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 {arizona_template:render_list(fun(Button) ->
                     arizona_template:from_string(~"""
-                    {arizona_template:render_stateless(arizona_web_components, cta_button, Button)}
+                    {arizona_template:render_stateless(arizona_website_components, cta_button, Button)}
                     """)
                 end, cta_buttons())}
             </div>
@@ -170,7 +170,7 @@ features() ->
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {arizona_template:render_list(fun(Feature) ->
                     arizona_template:from_string(~"""
-                    {arizona_template:render_stateless(arizona_web_components, feature_card, Feature)}
+                    {arizona_template:render_stateless(arizona_website_components, feature_card, Feature)}
                     """)
                 end, feature_list())}
             </div>
@@ -181,7 +181,7 @@ features() ->
 feature_list() ->
     [
         #{
-            icon => arizona_template:render_stateless(arizona_web_components, svg_icon, #{type => lightning}),
+            icon => arizona_template:render_stateless(arizona_website_components, svg_icon, #{type => lightning}),
             title => ~"Real-time Updates",
             description => [
                 ~"Built-in PubSub system enables real-time updates across connected ",
@@ -189,7 +189,7 @@ feature_list() ->
             ]
         },
         #{
-            icon => arizona_template:render_stateless(arizona_web_components, svg_icon, #{type => chart}),
+            icon => arizona_template:render_stateless(arizona_website_components, svg_icon, #{type => chart}),
             title => ~"BEAM Performance",
             description => [
                 ~"Built on Erlang/OTP, Arizona inherits the legendary fault-tolerance, ",
@@ -197,7 +197,7 @@ feature_list() ->
             ]
         },
         #{
-            icon => arizona_template:render_stateless(arizona_web_components, svg_icon, #{type => code}),
+            icon => arizona_template:render_stateless(arizona_website_components, svg_icon, #{type => code}),
             title => ~"Developer Experience",
             description => [
                 ~"Clean template syntax, hot code reloading, and comprehensive development ",
@@ -317,7 +317,7 @@ performance_stats() ->
             <div class="grid md:grid-cols-3 gap-8">
                 {arizona_template:render_list(fun(Stat) ->
                     arizona_template:from_string(~"""
-                    {arizona_template:render_stateless(arizona_web_components, stat_card, Stat)}
+                    {arizona_template:render_stateless(arizona_website_components, stat_card, Stat)}
                     """)
                 end, performance_stats_list())}
             </div>
@@ -350,7 +350,7 @@ footer() ->
     <footer class="py-12 px-6 border-t border-slate bg-obsidian bg-opacity-50">
         <div class="container mx-auto text-center">
             <div class="flex items-center justify-center space-x-3 mb-6">
-                {arizona_template:render_stateless(arizona_web_components, arizona_image, #{
+                {arizona_template:render_stateless(arizona_website_components, arizona_image, #{
                     type => logo,
                     size => small,
                     alt => ~"Arizona Framework",
@@ -366,7 +366,7 @@ footer() ->
             <div class="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">
                 {arizona_template:render_list(fun(Link) ->
                     arizona_template:from_string(~"""
-                    {arizona_template:render_stateless(arizona_web_components, nav_link, Link)}
+                    {arizona_template:render_stateless(arizona_website_components, nav_link, Link)}
                     """)
                 end, footer_links())}
             </div>

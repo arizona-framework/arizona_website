@@ -1,8 +1,8 @@
--module(arizona_web_static).
+-module(arizona_website_static).
 -export([generate/0]).
 
 generate() ->
-    ok = application:set_env(arizona_web, env, prod),
+    ok = application:set_env(arizona_website, env, prod),
     {ok, Cwd} = file:get_cwd(),
     OutputDir = filename:join([Cwd, "site"]),
     ok =
@@ -34,5 +34,5 @@ generate() ->
                 io:format("Failed to generate static site: ~p~n", [Reason]),
                 {error, Reason}
         end,
-    ok = application:set_env(arizona_web, env, dev),
+    ok = application:set_env(arizona_website, env, dev),
     Result.

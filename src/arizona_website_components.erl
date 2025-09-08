@@ -1,4 +1,4 @@
--module(arizona_web_components).
+-module(arizona_website_components).
 -compile({parse_transform, arizona_parse_transform}).
 -export([
     feature_card/1,

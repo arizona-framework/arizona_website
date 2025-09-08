@@ -1,4 +1,4 @@
--module(arizona_web_view).
+-module(arizona_website_view).
 -behaviour(arizona_view).
 -compile({parse_transform, arizona_parse_transform}).
 -export([mount/2]).
@@ -13,8 +13,8 @@ mount({Page, PageBindings}, _Req) ->
         page_bindings => PageBindings#{id => ~"page"}
     },
     Layout =
-        {arizona_web_layout, render, main_content, #{
-            env => application:get_env(arizona_web, env, dev),
+        {arizona_website_layout, render, main_content, #{
+            env => application:get_env(arizona_website, env, dev),
             title => ~"Arizona Framework"
         }},
     arizona_view:new(?MODULE, Bindings, Layout).
