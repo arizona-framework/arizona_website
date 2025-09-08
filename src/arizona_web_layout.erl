@@ -5,10 +5,11 @@
 render(Bindings) ->
     arizona_template:from_string(~""""
     <!DOCTYPE html>
-    <html>
+    <html class="scroll-smooth">
     <head>
         <title>{arizona_template:get_binding(title, Bindings)}</title>
         <link rel="stylesheet" href="assets/app.css">
+        <script src="assets/main.js"></script>
         <script src="assets/prism.js"></script>
         {
             case arizona_template:get_binding(env, Bindings, fun() -> prod end) of

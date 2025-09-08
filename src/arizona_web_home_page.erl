@@ -72,7 +72,7 @@ header_links() ->
 %% Hero section component
 hero() ->
     arizona_template:from_string(~""""
-    <section class="relative py-20 lg:py-32 px-6">
+    <section class="relative py-20 lg:py-32 px-6 opacity-0 translate-y-8 transition-all duration-700 animate-on-scroll">
         <div class="container mx-auto text-center">
             <!-- Large Arizona Logo -->
             <div class="flex justify-center mb-8">
@@ -159,7 +159,7 @@ cta_buttons() ->
 %% Features section component
 features() ->
     arizona_template:from_string(~""""
-    <section id="features" class="py-20 px-6 bg-obsidian bg-opacity-30">
+    <section id="features" class="py-20 px-6 bg-obsidian bg-opacity-30 opacity-0 translate-y-8 transition-all duration-700 animate-on-scroll">
         <div class="container mx-auto">
             <h2 class="text-4xl font-bold text-pearl text-center mb-16">
                 Why Choose <span class="text-arizona-teal">Arizona?</span>
@@ -207,7 +207,7 @@ feature_list() ->
 %% Code example component
 code_example() ->
     arizona_template:from_string(~""""
-    <section id="examples" class="py-20 px-6">
+    <section id="examples" class="py-20 px-6 opacity-0 translate-y-8 transition-all duration-700 animate-on-scroll">
         <div class="container mx-auto">
             <div class="max-w-4xl mx-auto">
                 <h2 class="text-4xl font-bold text-pearl text-center mb-12">
@@ -291,7 +291,7 @@ example() ->
 %% Performance stats component
 performance_stats() ->
     arizona_template:from_string(~""""
-    <section class="py-20 px-6 bg-obsidian bg-opacity-30">
+    <section class="py-20 px-6 bg-obsidian bg-opacity-30 opacity-0 translate-y-8 transition-all duration-700 animate-on-scroll">
         <div class="container mx-auto text-center">
             <h2 class="text-4xl font-bold text-pearl mb-16">
                 Built for <span class="text-arizona-teal">Performance</span>
@@ -330,7 +330,7 @@ performance_stats_list() ->
 %% Footer component
 footer() ->
     arizona_template:from_string(~""""
-    <footer class="py-12 px-6 border-t border-slate bg-obsidian bg-opacity-50">
+    <footer class="py-12 px-6 border-t border-slate bg-obsidian bg-opacity-50 opacity-0 translate-y-8 transition-all duration-700 animate-on-scroll">
         <div class="container mx-auto text-center">
             <div class="flex items-center justify-center space-x-3 mb-6">
                 {arizona_template:render_stateless(arizona_web_components, arizona_image, #{

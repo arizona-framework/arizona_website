@@ -30,6 +30,7 @@ routes() ->
     [
         {asset, ~"/favicon.ico", {priv_file, arizona_web, ~"static/favicon.ico"}},
         {asset, ~"/robots.txt", {priv_file, arizona_web, ~"static/robots.txt"}},
+        {asset, ~"/assets/main.js", {priv_file, arizona_web, ~"static/assets/main.js"}},
         {asset, ~"/assets/prism.js", {priv_file, arizona_web, ~"static/assets/prism.js"}},
         {asset, ~"/assets/dev.js", {priv_file, arizona_web, ~"static/assets/dev.js"}},
         {asset, ~"/assets/app.css", {priv_file, arizona_web, ~"static/assets/app.css"}},

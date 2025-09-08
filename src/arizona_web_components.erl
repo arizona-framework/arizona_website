@@ -56,7 +56,7 @@ nav_link(Bindings) ->
     <a
         href="{arizona_template:get_binding(href, Bindings)}"
         class="{arizona_template:get_binding(classes, Bindings, fun() ->
-            ~"text-silver hover:text-arizona-teal transition-colors duration-300"
+            ~"text-silver hover:text-arizona-teal focus:text-arizona-teal focus:outline-none focus:ring-2 focus:ring-arizona-teal/50 transition-colors duration-300"
         end)}"
         {
             case arizona_template:find_binding(target, Bindings) of
@@ -89,6 +89,7 @@ cta_button(Bindings) ->
         rel="noopener noreferrer"
         class="{[
             ~"inline-block font-bold py-4 px-8 rounded-xl transition-all duration-300 cursor-pointer ",
+            ~"focus:outline-none focus:ring-2 focus:ring-arizona-teal/50 focus:ring-offset-2 focus:ring-offset-obsidian ",
             button_classes(ButtonType),
             arizona_template:get_binding(extra_classes, Bindings, fun() -> ~"" end)
         ]}"
