@@ -17,6 +17,8 @@ generate() ->
             ~"/" => #{parallel => true},
             ~"/favicon.ico" => #{parallel => true},
             ~"/robots.txt" => #{parallel => true},
+            ~"/assets/main.js" => #{parallel => true},
+            ~"/assets/prism.js" => #{parallel => true},
             ~"/assets/app.css" => #{parallel => true},
             ~"/images/arizona_256x256.jpeg" => #{parallel => true},
             ~"/images/arizona_512x512.jpeg" => #{parallel => true}

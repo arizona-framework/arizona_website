@@ -28,18 +28,15 @@ arizona() ->
 
 routes() ->
     [
+        %% Website routes
         {asset, ~"/favicon.ico", {priv_file, arizona_website, ~"static/favicon.ico"}},
         {asset, ~"/robots.txt", {priv_file, arizona_website, ~"static/robots.txt"}},
-        {asset, ~"/assets/main.js", {priv_file, arizona_website, ~"static/assets/main.js"}},
-        {asset, ~"/assets/prism.js", {priv_file, arizona_website, ~"static/assets/prism.js"}},
-        {asset, ~"/assets/dev.js", {priv_file, arizona_website, ~"static/assets/dev.js"}},
-        {asset, ~"/assets/app.css", {priv_file, arizona_website, ~"static/assets/app.css"}},
-        {asset, ~"/assets", {priv_dir, arizona, ~"static/assets"}},
-        {asset, ~"/images/arizona_256x256.jpeg", {priv_file, arizona_website, ~"static/images/arizona_256x256.jpeg"}},
-        {asset, ~"/images/arizona_512x512.jpeg", {priv_file, arizona_website, ~"static/images/arizona_512x512.jpeg"}},
+        {asset, ~"/assets", {priv_dir, arizona_website, ~"static/assets"}},
         {asset, ~"/images", {priv_dir, arizona_website, ~"static/images"}},
-        {websocket, ~"/live"},
-        {view, ~"/", arizona_website_view, {arizona_website_home_page, #{}}}
+        {view, ~"/", arizona_website_view, {arizona_website_home_page, #{}}},
+        %% Arizona routes
+        {asset, ~"/assets", {priv_dir, arizona, ~"static/assets"}},
+        {websocket, ~"/live"}
     ].
 
 compile_erl(Files) ->
