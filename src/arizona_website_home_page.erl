@@ -373,8 +373,20 @@ footer() ->
 
             <div class="mt-8 pt-8 border-t border-slate text-center">
                 <p class="text-arizona-sand text-sm">
-                    <span class="block sm:inline">© 2025 Arizona Framework.</span>
+                    <span class="block sm:inline">© 2025 Arizona Framework</span>
+                    <span class="hidden sm:inline">•</span>
                     <span class="block sm:inline sm:ml-1">Built with Arizona 🌵</span>
+                </p>
+                <p class="text-silver text-sm mt-2">
+                    This site is powered by
+                    <a
+                        href="https://www.netlify.com"
+                        class="text-arizona-teal hover:text-arizona-sage transition-colors"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Netlify
+                    </a>
                 </p>
             </div>
         </div>
