@@ -17,6 +17,12 @@ generate() ->
         route_paths => #{
             ~"/" => #{parallel => true},
             ~"/favicon.ico" => #{parallel => true},
+            ~"/favicon.svg" => #{parallel => true},
+            ~"/favicon-96x96.png" => #{parallel => true},
+            ~"/apple-touch-icon.png" => #{parallel => true},
+            ~"/web-app-manifest-192x192.png" => #{parallel => true},
+            ~"/web-app-manifest-512x512.png" => #{parallel => true},
+            ~"/site.webmanifest" => #{parallel => true},
             ~"/robots.txt" => #{parallel => true},
             ~"/assets/main.js" => #{parallel => true},
             ~"/assets/prism.js" => #{parallel => true},
