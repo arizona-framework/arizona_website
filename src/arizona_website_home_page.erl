@@ -302,7 +302,7 @@ example() ->
     handle_event(~"increment", _Params, State) ->
         Count = arizona_stateful:get_binding(count, State),
         UpdatedState = arizona_stateful:put_binding(count, Count + 1, State),
-        {noreply, UpdatedState}.
+        {[], UpdatedState}.
     """".
 
 %% Performance stats component

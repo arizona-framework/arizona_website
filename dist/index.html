@@ -264,7 +264,7 @@ render(Bindings) -&gt;
 handle_event(~&quot;increment&quot;, _Params, State) -&gt;
     Count = arizona_stateful:get_binding(count, State),
     UpdatedState = arizona_stateful:put_binding(count, Count + 1, State),
-    {noreply, UpdatedState}.
+    {[], UpdatedState}.
                         </code>
                     </pre>
                 </div>
