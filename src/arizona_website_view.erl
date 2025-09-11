@@ -30,7 +30,7 @@ render(Bindings) ->
     """).
 
 handle_event(~"reload", FileType, View) ->
-    {reply, #{~"reload" => FileType}, View}.
+    {[{reply, #{~"reload" => FileType}}], View}.
 
 initialize_connected_session() ->
     arizona_pubsub:join(~"reload", self()).
