@@ -13,7 +13,7 @@ generate() ->
 
     % Configuration for static site generation
     Config = #{
-        base_url => ~"https://arizonaframework.org",
+        base_url => ~"https://arizona-framework.org",
         route_paths => #{
             ~"/" => #{parallel => true},
             ~"/favicon.ico" => #{parallel => true},

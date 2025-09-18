@@ -3,4 +3,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://arizonaframework.org/sitemap.xml
+Sitemap: https://arizona-framework.org/sitemap.xml
