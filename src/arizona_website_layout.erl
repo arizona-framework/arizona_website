@@ -39,7 +39,7 @@ render(Bindings) ->
                 ]},
                 {meta, [{name, ~"apple-mobile-web-app-title"}, {content, ~"Arizona"}]},
                 {link, [{rel, ~"manifest"}, {href, ~"site.webmanifest"}]},
-                {meta, [{name, ~"theme-color"}, {content, ~"#d2691e"}]},
+                {meta, [{name, ~"theme-color"}, {content, ~"#b8460e"}]},
                 {meta, [{property, ~"og:type"}, {content, ~"website"}]},
                 {meta, [{property, ~"og:url"}, {content, ~"https://arizona-framework.org/"}]},
                 {meta, [{property, ~"og:title"}, {content, ~"Arizona Framework"}]},
@@ -49,10 +49,19 @@ render(Bindings) ->
                 {meta, [{name, ~"twitter:title"}, {content, ~"Arizona Framework"}]},
                 {meta, [{name, ~"twitter:description"}, {content, ?DESCRIPTION}]},
                 {meta, [{name, ~"twitter:image"}, {content, ?IMAGE}]},
+                {link, [{rel, ~"preconnect"}, {href, ~"https://fonts.googleapis.com"}]},
+                {link, [{rel, ~"preconnect"}, {href, ~"https://fonts.gstatic.com"}, crossorigin]},
+                {link, [
+                    {rel, ~"stylesheet"},
+                    {href,
+                        ~"https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap"}
+                ]},
                 {link, [{rel, ~"stylesheet"}, {href, ~"assets/app.css"}]},
-                {script, [{src, ~"assets/main.js"}], []},
-                {script, [{src, ~"assets/prism.js"}], []}
+                {script, [{src, ~"assets/prism.js"}, defer], []},
+                %% Arizona's static client: runs the page's event attributes
+                %% in the browser, with no server.
+                {script, [{type, ~"module"}, {src, ~"assets/main.js"}], []}
             ]},
-            {body, [{class, ~"bg-obsidian min-h-screen"}], [?inner_content]}
+            {body, [], [?inner_content]}
         ]}
     ]).

@@ -1,25 +1,132 @@
 @import "tailwindcss";
 @import "./prism.css";
 
-@source "src/**/*.erl";
+@source "../../src/**/*.erl";
 
-@theme {
-  /* Arizona Brand Colors */
-  --color-arizona-terracotta: #D2691E;
-  --color-arizona-teal: #4A9B9B;
-  --color-arizona-gold: #F4A460;
-  --color-arizona-mesa: #B8460E;
-  --color-arizona-sage: #87A96B;
-  --color-arizona-sand: #D2B48C;
+/* The palette is a set of tokens on each element carrying `data-theme`: the
+   page, and the cheat sheet, which a Picture-in-Picture window takes out of the
+   page. `system` follows the OS; the theme switch sets `light` or `dark`. */
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-sunken: var(--sunken);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-teal: var(--teal);
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
 
-  /* Dark Theme Neutrals */
-  --color-obsidian: #1A1A1A;
-  --color-charcoal: #2A2A2A;
-  --color-slate: #4A4A4A;
-  --color-silver: #B8B8B8;
-  --color-pearl: #E8E8E8;
+[data-theme] {
+  --canvas: #faf7f2;
+  --surface: #ffffff;
+  --sunken: #f3eee6;
+  --ink: #1c1917;
+  --muted: #5c5650;
+  --line: #e6dfd5;
+  --accent: #b8460e;
+  --accent-ink: #ffffff;
+  --accent-soft: #fbeadc;
+  --teal: #2f7a7a;
+  color-scheme: light;
+  background-color: var(--canvas);
+  color: var(--ink);
+}
 
-  /* Enhanced gradients */
-  --gradient-arizona: linear-gradient(135deg, var(--color-arizona-terracotta), var(--color-arizona-mesa));
-  --gradient-desert: linear-gradient(to bottom right, var(--color-obsidian), var(--color-charcoal), var(--color-arizona-terracotta));
+[data-theme="dark"] {
+  --canvas: #141210;
+  --surface: #1c1916;
+  --sunken: #0f0d0b;
+  --ink: #eee8e1;
+  --muted: #a69f97;
+  --line: #322d28;
+  --accent: #e8823f;
+  --accent-ink: #1a0e05;
+  --accent-soft: #33200f;
+  --teal: #74bcbc;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-theme="system"] {
+    --canvas: #141210;
+    --surface: #1c1916;
+    --sunken: #0f0d0b;
+    --ink: #eee8e1;
+    --muted: #a69f97;
+    --line: #322d28;
+    --accent: #e8823f;
+    --accent-ink: #1a0e05;
+    --accent-soft: #33200f;
+    --teal: #74bcbc;
+    color-scheme: dark;
+  }
+}
+
+body {
+  background-color: #faf7f2;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #141210;
+  }
+}
+
+/* The switch marks the active choice from the `data-theme` its buttons set. */
+[data-theme="system"] .theme-system,
+[data-theme="light"] .theme-light,
+[data-theme="dark"] .theme-dark {
+  background-color: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
+}
+
+/* Tabs: one `data-tab` attribute on the container picks the visible panel. */
+.tabs .panel {
+  display: none;
+}
+.tabs[data-tab="view"] .panel-view,
+.tabs[data-tab="config"] .panel-config,
+.tabs[data-tab="static"] .panel-static {
+  display: block;
+}
+.tabs[data-tab="view"] .tab-view,
+.tabs[data-tab="config"] .tab-config,
+.tabs[data-tab="static"] .tab-static {
+  color: var(--ink);
+  border-color: var(--accent);
+}
+
+code,
+.font-mono {
+  font-variant-ligatures: none;
+}
+
+dialog::backdrop {
+  background: rgb(20 18 16 / 0.55);
+}
+
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+/* Code stays dark in both themes. */
+pre[class*="language-"],
+code[class*="language-"] {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  text-shadow: none;
+  font-variant-ligatures: none;
+}
+pre[class*="language-"] {
+  background: #1c1917;
+  margin: 0;
+  border-radius: 0;
+  padding: 1.25rem;
 }
