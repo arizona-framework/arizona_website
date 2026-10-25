@@ -4,7 +4,7 @@
 @source "../../src/**/*.erl";
 
 /* The palette is a set of tokens on each element carrying `data-theme`: the
-   page, and the cheat sheet, which a Picture-in-Picture window takes out of the
+   page, and the guide, which a Picture-in-Picture window takes out of the
    page. `system` follows the OS; the theme switch sets `light` or `dark`. */
 @theme inline {
   --color-canvas: var(--canvas);
@@ -104,6 +104,30 @@ body {
 code,
 .font-mono {
   font-variant-ligatures: none;
+}
+
+/* The guide: its own `data-tab` picks the notes and marks the tab. */
+.guide .note {
+  display: none;
+}
+.guide[data-tab="view"] .note-view,
+.guide[data-tab="config"] .note-config,
+.guide[data-tab="static"] .note-static {
+  display: block;
+}
+.guide[data-tab="view"] .guide-view,
+.guide[data-tab="config"] .guide-config,
+.guide[data-tab="static"] .guide-static {
+  background-color: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
+}
+
+/* Popped out, the guide is the window's only content: fill it, edge to edge. */
+body > .guide {
+  min-height: 100vh;
+  border: 0;
+  border-radius: 0;
 }
 
 dialog::backdrop {

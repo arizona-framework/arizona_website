@@ -12,7 +12,7 @@ by `arizona_static`, into `dist/`, which Netlify serves. The counter shown on th
 `examples/counter.erl`, compiled with the site, so the sample always builds.
 
 The page has no server, but it is interactive: the theme switch, tabs, dialog, copy buttons and
-the cheat sheet's Picture-in-Picture window are ordinary Arizona event attributes, run in the
+the example guide's Picture-in-Picture window are ordinary Arizona event attributes, run in the
 browser by Arizona's static client (`arizona-static.min.js`, copied from the `arizona`
 dependency). `priv/static/assets/main.js` starts it.
 
@@ -33,7 +33,7 @@ Commit the rebuilt `dist/` with your change: it is what gets deployed.
 src/
 ├── arizona_website.erl             # build/0: generates dist/
 ├── arizona_website_home_page.erl   # the page
-├── arizona_website_cheatsheet.erl  # the cheat sheet view (popped out with PiP)
+├── arizona_website_guide.erl       # the example guide (popped out with PiP)
 └── arizona_website_layout.erl      # the HTML shell
 examples/
 └── counter.erl                     # the sample shown on the page

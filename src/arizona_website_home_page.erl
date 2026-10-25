@@ -2,7 +2,7 @@
 -moduledoc """
 The home page. Rendered once, at build time (`arizona_website:build/0`), and
 served as plain files: the theme switch, tabs, dialog, copy buttons and the
-cheat sheet's Picture-in-Picture window run in the browser on Arizona's static
+guide's Picture-in-Picture window run in the browser on Arizona's static
 client, with no server behind them. The sections are local element helpers the
 parse transform inlines.
 """.
@@ -104,7 +104,7 @@ theme_button(Theme, Label) ->
         [
             {type, ~"button"},
             {class, [~"theme-", Theme, ~" rounded-md px-2.5 py-1 font-medium transition-colors"]},
-            %% The page and the cheat sheet each hold a `theme` slot, so the
+            %% The page and the guide each hold a `theme` slot, so the
             %% switch sets it in every view; the page script remembers it.
             {az_click, [
                 arizona_js:set_all(~"theme", Theme),
@@ -152,6 +152,7 @@ example(Counter) ->
         ]},
         {'div',
             [
+                {id, ~"example-tabs"},
                 {class, ~"tabs mt-10 overflow-hidden rounded-xl border border-line bg-surface"},
                 {'data-tab', ?local(~"tab", ~"view")}
             ],
@@ -182,7 +183,8 @@ tab(Tab, Label) ->
                 Tab,
                 ~" -mb-px border-b-2 border-transparent px-3 py-3 font-medium transition-colors hover:text-ink"
             ]},
-            {az_click, arizona_js:set(~"tab", Tab)}
+            %% Every view: the guide beside the example marks the tab too.
+            {az_click, arizona_js:set_all(~"tab", Tab)}
         ],
         [Label]}.
 
@@ -220,7 +222,7 @@ showcase() ->
                         )
                     ]},
                 {'div', [], [
-                    ?stateful(arizona_website_cheatsheet, #{id => ~"cheatsheet"}),
+                    ?stateful(arizona_website_guide, #{id => ~"guide"}),
                     {button,
                         [
                             {type, ~"button"},
@@ -229,9 +231,9 @@ showcase() ->
                             {az_hook, ~"NeedsPip"},
                             {class, [?SECONDARY, ~" mt-3 w-full justify-center"]},
                             {az_click,
-                                arizona_js:request_pip(~"cheatsheet", #{width => 340, height => 520})}
+                                arizona_js:request_pip(~"guide", #{width => 360, height => 440})}
                         ],
-                        [~"Pop out the cheat sheet"]}
+                        [~"Pop out the guide"]}
                 ]}
             ]}
         ]}
@@ -395,8 +397,8 @@ showcase_list() ->
             code => ~"arizona_js:set_all(~\"theme\", ~\"dark\")"
         },
         #{
-            what => ~"Each tab sets the one the panels read",
-            code => ~"arizona_js:set(~\"tab\", ~\"config\")"
+            what => ~"Each tab sets the one the panels and the guide read",
+            code => ~"arizona_js:set_all(~\"tab\", ~\"config\")"
         },
         #{
             what => ~"Get started opens a modal dialog",
@@ -407,8 +409,8 @@ showcase_list() ->
             code => ~"arizona_js:copy_to_clipboard(~\"#code-view\")"
         },
         #{
-            what => ~"The cheat sheet floats in its own window",
-            code => ~"arizona_js:request_pip(~\"cheatsheet\")"
+            what => ~"The guide floats in its own window, and still drives the page",
+            code => ~"arizona_js:request_pip(~\"guide\")"
         }
     ].
 
