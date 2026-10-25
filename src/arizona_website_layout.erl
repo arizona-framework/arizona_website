@@ -1,75 +1,58 @@
 -module(arizona_website_layout).
--compile({parse_transform, arizona_parse_transform}).
+-moduledoc "The page shell: head metadata, styles and scripts around the page.".
+-include_lib("arizona/include/arizona_stateless.hrl").
+
 -export([render/1]).
 
+-define(DESCRIPTION,
+    ~"Arizona is a real-time web framework for Erlang/OTP: views render on the server, and only what changed goes over the wire."
+).
+-define(IMAGE,
+    ~"https://github.com/arizona-framework/arizona_website/raw/main/priv/static/images/arizona_512x512.jpeg"
+).
+
+-spec render(az:bindings()) -> az:template().
 render(Bindings) ->
-    arizona_template:from_string(~""""
-    <!DOCTYPE html>
-    <html class="scroll-smooth" lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{arizona_template:get_binding(title, Bindings)}</title>
-        <meta name="description" content="{[
-            ~"Arizona Framework - Build real-time web applications with Erlang/OTP. Modern, ",
-            ~"fault-tolerant web framework with real-time interactivity and BEAM performance."
-        ]}">
-        <meta name="keywords" content="{[
-            ~"erlang, web framework, real-time, otp, beam, ",
-            ~"functional programming, fault tolerance"
-        ]}">
-        <meta name="author" content="Arizona Framework Team">
-        {% Favicon }
-        <link rel="icon" type="image/png" href="favicon-96x96.png" sizes="96x96">
-        <link rel="icon" type="image/svg+xml" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.ico">
-        <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-        <meta name="apple-mobile-web-app-title" content="Arizona">
-        <link rel="manifest" href="site.webmanifest">
-        <meta name="theme-color" content="#d2691e">
-
-        {% Open Graph / Facebook }
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://arizona-framework.org/">
-        <meta property="og:title" content="Arizona Framework - Real-time Web Applications">
-        <meta property="og:description" content="{[
-            ~"Build real-time web applications with Erlang/OTP. Modern, fault-tolerant ",
-            ~"web framework with real-time interactivity and BEAM performance."
-        ]}">
-        <meta property="og:image" content="{[
-            ~"https://github.com/arizona-framework/arizona_website/raw/main",
-            ~"/priv/static/images/arizona_512x512.jpeg"
-        ]}">
-
-        {% Twitter }
-        <meta property="twitter:card" content="summary_large_image">
-        <meta property="twitter:url" content="https://arizona-framework.org/">
-        <meta property="twitter:title" content="Arizona Framework - Real-time Web Applications">
-        <meta property="twitter:description" content="{[
-            ~"Build real-time web applications with Erlang/OTP. Modern, fault-tolerant ",
-            ~"web framework with real-time interactivity and BEAM performance."
-        ]}">
-        <meta property="twitter:image" content="{[
-            ~"https://github.com/arizona-framework/arizona_website/raw/main",
-            ~"/priv/static/images/arizona_512x512.jpeg"
-        ]}">
-
-        <link rel="stylesheet" href="assets/app.css">
-        <script src="assets/main.js"></script>
-        <script src="assets/prism.js"></script>
-        {
-            case arizona_template:get_binding(env, Bindings, fun() -> prod end) of
-                dev ->
-                    ~"""
-                    <script src="assets/dev.js" type="module" async></script>
-                    """;
-                prod ->
-                    ~""
-            end
-        }
-    </head>
-    <body class="bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900 min-h-screen">
-        {arizona_template:render_slot(arizona_template:get_binding(main_content, Bindings))}
-    </body>
-    </html>
-    """").
+    ?html([
+        ~"<!DOCTYPE html>",
+        {html, [{class, ~"scroll-smooth"}, {lang, ~"en"}], [
+            {head, [], [
+                {meta, [{charset, ~"UTF-8"}]},
+                {meta, [{name, ~"viewport"}, {content, ~"width=device-width, initial-scale=1.0"}]},
+                {title, [], [~"Arizona Framework"]},
+                {meta, [{name, ~"description"}, {content, ?DESCRIPTION}]},
+                {meta, [
+                    {name, ~"keywords"},
+                    {content,
+                        ~"erlang, otp, beam, web framework, real-time, websocket, server-side rendering"}
+                ]},
+                {link, [
+                    {rel, ~"icon"},
+                    {type, ~"image/png"},
+                    {href, ~"favicon-96x96.png"},
+                    {sizes, ~"96x96"}
+                ]},
+                {link, [{rel, ~"icon"}, {type, ~"image/svg+xml"}, {href, ~"favicon.svg"}]},
+                {link, [{rel, ~"shortcut icon"}, {href, ~"favicon.ico"}]},
+                {link, [
+                    {rel, ~"apple-touch-icon"}, {sizes, ~"180x180"}, {href, ~"apple-touch-icon.png"}
+                ]},
+                {meta, [{name, ~"apple-mobile-web-app-title"}, {content, ~"Arizona"}]},
+                {link, [{rel, ~"manifest"}, {href, ~"site.webmanifest"}]},
+                {meta, [{name, ~"theme-color"}, {content, ~"#d2691e"}]},
+                {meta, [{property, ~"og:type"}, {content, ~"website"}]},
+                {meta, [{property, ~"og:url"}, {content, ~"https://arizona-framework.org/"}]},
+                {meta, [{property, ~"og:title"}, {content, ~"Arizona Framework"}]},
+                {meta, [{property, ~"og:description"}, {content, ?DESCRIPTION}]},
+                {meta, [{property, ~"og:image"}, {content, ?IMAGE}]},
+                {meta, [{name, ~"twitter:card"}, {content, ~"summary_large_image"}]},
+                {meta, [{name, ~"twitter:title"}, {content, ~"Arizona Framework"}]},
+                {meta, [{name, ~"twitter:description"}, {content, ?DESCRIPTION}]},
+                {meta, [{name, ~"twitter:image"}, {content, ?IMAGE}]},
+                {link, [{rel, ~"stylesheet"}, {href, ~"assets/app.css"}]},
+                {script, [{src, ~"assets/main.js"}], []},
+                {script, [{src, ~"assets/prism.js"}], []}
+            ]},
+            {body, [{class, ~"bg-obsidian min-h-screen"}], [?inner_content]}
+        ]}
+    ]).
