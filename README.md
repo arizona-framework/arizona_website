@@ -7,76 +7,31 @@ for building real-time web applications.
 
 ## Overview
 
-This project showcases the Arizona Framework's capabilities through a
-static website featuring:
-
-- **Component-based architecture** with reusable UI components
-- **Static site generation** for deployment
-- **Responsive design** with Tailwind CSS
-- **Syntax highlighting** for code examples
-- **Scroll animations** and modern UI effects
+A static page generated with Arizona itself: the views in `src/` are rendered once, at build time,
+by `arizona_static`, into `dist/`, which Netlify serves. The counter shown on the page is
+`examples/counter.erl`, compiled with the site, so the sample always builds.
 
 ## Development
 
-### Prerequisites
-
-- Erlang/OTP 27+
-- Rebar3
-- Node.js (for CSS build)
-
-### Setup
+Requires Erlang/OTP 29+, rebar3 and Node.js (for the Tailwind CSS build).
 
 ```bash
-# Clone the repository
-git clone git@github.com:arizona-framework/arizona_website.git
-cd arizona_website
-
-# Install dependencies
-npm install
-rebar3 deps
-
-# Compile the project
-rebar3 compile
-
-# Start the development server
-rebar3 shell
+make dist      # build the CSS and the page into dist/
+make preview   # serve dist/ at http://localhost:8000
 ```
 
-The website will be available at http://localhost:1912
+Commit the rebuilt `dist/` with your change: it is what gets deployed.
 
-### CSS Development
-
-```bash
-# Build CSS (development)
-npm run build:css
-```
-
-## Static Site Generation
-
-Generate a static version of the website:
-
-```bash
-rebar3 shell --eval "arizona_website_static:generate(), init:stop()."
-```
-
-The static site will be generated in the `dist/` directory.
-
-## Project Structure
+## Project structure
 
 ```
 src/
-├── arizona_website_app.erl          # Application entry point
-├── arizona_website_conf.erl         # Server configuration
-├── arizona_website_home_page.erl    # Homepage component
-├── arizona_website_components.erl   # Reusable UI components
-├── arizona_website_layout.erl       # HTML layout template
-├── arizona_website_static.erl       # Static site generator
-└── arizona_website_view.erl         # Main view controller
-
-priv/static/
-├── assets/                          # JavaScript and CSS files
-├── images/                          # Arizona Framework logos
-└── favicon.ico                      # Site favicon
+├── arizona_website.erl             # build/0: generates dist/
+├── arizona_website_home_page.erl   # the page
+└── arizona_website_layout.erl      # the HTML shell
+examples/
+└── counter.erl                     # the sample shown on the page
+priv/static/                        # assets, images and icons, copied into dist/
 ```
 
 ## License
