@@ -1,7 +1,8 @@
 -module(arizona_website).
 -moduledoc """
-Builds the site into `dist/`: the home page through `arizona_static`, and the
-files under `priv/static` copied beside it. Run with `make dist`.
+Builds the site into `dist/`: the home page through `arizona_static`, the files
+under `priv/static` copied beside it, and Arizona's static client from the
+`arizona` dependency. Run with `make dist`.
 """.
 
 -export([build/0]).
@@ -18,6 +19,9 @@ build() ->
     ),
     Static = filename:join(code:priv_dir(arizona_website), "static"),
     ok = copy_tree(Static, ?OUT),
+    %% Arizona's static client, which the page script starts.
+    Client = filename:join(code:priv_dir(arizona), "static/assets/js/arizona-static.min.js"),
+    {ok, _Bytes} = file:copy(Client, filename:join(?OUT, "assets/arizona-static.min.js")),
     ok.
 
 clean(Dir) ->

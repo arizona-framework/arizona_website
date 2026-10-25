@@ -1,7 +1,10 @@
 -module(arizona_website_home_page).
 -moduledoc """
-The home page. Rendered once, at build time (`arizona_website:build/0`); the
-sections are local element helpers the parse transform inlines.
+The home page. Rendered once, at build time (`arizona_website:build/0`), and
+served as plain files: the theme switch, tabs, dialog, copy buttons and the
+guide's Picture-in-Picture window run in the browser on Arizona's static
+client, with no server behind them. The sections are local element helpers the
+parse transform inlines.
 """.
 -include_lib("arizona/include/arizona_stateful.hrl").
 
@@ -11,17 +14,22 @@ sections are local element helpers the parse transform inlines.
 -define(GITHUB, ~"https://github.com/arizona-framework/arizona").
 -define(DOCS, ~"https://hexdocs.pm/arizona").
 -define(QUICK_START, ~"https://github.com/arizona-framework/arizona#quick-start").
--define(NOVA, ~"https://github.com/arizona-framework/arizona_nova").
--define(CARD,
-    ~"bg-charcoal/50 backdrop-blur-sm rounded-xl p-8 border border-slate hover:border-arizona-teal/50 transition-all duration-300"
+-define(CONTAINER, ~"mx-auto max-w-5xl px-6").
+-define(EYEBROW, ~"mb-3 text-xs font-semibold uppercase tracking-wider text-accent").
+-define(H2, ~"text-3xl font-semibold tracking-tight text-ink sm:text-4xl").
+-define(LEAD, ~"mt-4 max-w-2xl text-lg leading-relaxed text-muted").
+-define(BUTTON,
+    ~"inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors"
 ).
--define(REVEAL, ~"opacity-0 translate-y-8 transition-all duration-700 animate-on-scroll").
+-define(PRIMARY, [?BUTTON, ~" bg-accent text-accent-ink hover:opacity-90"]).
+-define(SECONDARY, [?BUTTON, ~" border border-line bg-surface text-ink hover:bg-sunken"]).
+-define(NAV_LINK, ~"text-sm text-muted transition-colors hover:text-ink").
 
 -spec mount(az:bindings()) -> az:mount_ret().
 mount(_Bindings) ->
     %% The sample is the real module, compiled with the site.
-    {ok, Example} = file:read_file("examples/counter.erl"),
-    {#{id => ~"page", example => Example}, #{}}.
+    {ok, Counter} = file:read_file("examples/counter.erl"),
+    {#{id => ~"page", counter => Counter}, #{}}.
 
 -spec render(az:bindings()) -> az:template().
 render(Bindings) ->
@@ -31,16 +39,20 @@ render(Bindings) ->
                 %% Rendered once, at build time: no diff markers in the output.
                 'az-nodiff',
                 {id, ?get(id)},
-                {class,
-                    ~"min-h-screen bg-gradient-to-br from-obsidian via-charcoal to-arizona-terracotta"}
+                {'data-theme', ?local(~"theme", ~"system")},
+                {class, ~"min-h-screen font-sans antialiased"}
             ],
             [
                 header(),
-                hero(),
-                features(),
-                example(?get(example)),
-                targets(),
-                footer()
+                {main, [], [
+                    hero(),
+                    example(?get(counter)),
+                    showcase(),
+                    features(),
+                    adapters()
+                ]},
+                footer(),
+                quick_start()
             ]}
     ).
 
@@ -49,344 +61,394 @@ render(Bindings) ->
 %% --------------------------------------------------------------------
 
 header() ->
-    {header,
+    {header, [{class, ~"sticky top-0 z-10 border-b border-line bg-canvas/85 backdrop-blur"}], [
+        {nav, [{class, [?CONTAINER, ~" flex h-16 items-center justify-between gap-6"]}], [
+            {a, [{href, ~"/"}, {class, ~"flex items-center gap-2.5"}], [
+                {img, [
+                    {src, ~"images/arizona_256x256.jpeg"},
+                    {alt, <<>>},
+                    {class, ~"h-8 w-8 rounded-md"},
+                    {width, ~"32"},
+                    {height, ~"32"}
+                ]},
+                {span, [{class, ~"font-semibold text-ink"}], [~"Arizona"]}
+            ]},
+            {'div', [{class, ~"flex items-center gap-6"}], [
+                {'div', [{class, ~"hidden items-center gap-6 md:flex"}], [
+                    {a, [{href, ~"#example"}, {class, ?NAV_LINK}], [~"Example"]},
+                    {a, [{href, ~"#this-page"}, {class, ?NAV_LINK}], [~"This page"]},
+                    {a, [{href, ~"#features"}, {class, ?NAV_LINK}], [~"Features"]},
+                    {a, [{href, ?DOCS}, {class, ?NAV_LINK}], [~"Docs"]},
+                    {a, [{href, ?GITHUB}, {class, ?NAV_LINK}], [~"GitHub"]}
+                ]},
+                theme_switch()
+            ]}
+        ]}
+    ]}.
+
+theme_switch() ->
+    {'div',
         [
-            {class,
-                ~"sticky top-0 z-10 bg-obsidian/40 backdrop-blur-sm border-b border-slate shadow-lg"}
+            {role, ~"group"},
+            {'aria-label', ~"Color theme"},
+            {class, ~"flex rounded-lg border border-line bg-sunken p-0.5 text-xs text-muted"}
         ],
         [
-            {nav, [{class, ~"container mx-auto px-6 py-4 flex items-center justify-between"}], [
-                {a,
-                    [
-                        {href, ~"/"},
-                        {class, ~"flex items-center gap-3 hover:opacity-80 transition-opacity"}
-                    ],
-                    [
-                        logo(~"images/arizona_256x256.jpeg", ~"h-10 w-10 rounded-lg shadow-lg"),
-                        {'div', [], [
-                            {p, [{class, ~"text-xl font-bold text-pearl"}], [~"Arizona"]},
-                            {p, [{class, ~"text-xs text-arizona-terracotta"}], [
-                                ~"Real-time web framework"
-                            ]}
-                        ]}
-                    ]},
-                {'div', [{class, ~"hidden md:flex items-center gap-8"}], [
-                    {a,
-                        [
-                            {href, ~"#features"},
-                            {class, ~"text-silver hover:text-arizona-teal transition-colors"}
-                        ],
-                        [
-                            ~"Features"
-                        ]},
-                    {a,
-                        [
-                            {href, ~"#example"},
-                            {class, ~"text-silver hover:text-arizona-teal transition-colors"}
-                        ],
-                        [
-                            ~"Example"
-                        ]},
-                    {a,
-                        [
-                            {href, ?DOCS},
-                            {target, ~"_blank"},
-                            {rel, ~"noopener noreferrer"},
-                            {class, ~"text-silver hover:text-arizona-teal transition-colors"}
-                        ],
-                        [~"Docs"]},
-                    {a,
-                        [
-                            {href, ?GITHUB},
-                            {target, ~"_blank"},
-                            {rel, ~"noopener noreferrer"},
-                            {class,
-                                ~"font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-arizona-terracotta to-arizona-mesa text-pearl shadow-2xl shadow-arizona-terracotta/25 hover:scale-105 transition-all duration-300"}
-                        ],
-                        [~"GitHub"]}
-                ]}
-            ]}
+            theme_button(~"system", ~"Auto"),
+            theme_button(~"light", ~"Light"),
+            theme_button(~"dark", ~"Dark")
         ]}.
 
+theme_button(Theme, Label) ->
+    {button,
+        [
+            {type, ~"button"},
+            {class, [~"theme-", Theme, ~" rounded-md px-2.5 py-1 font-medium transition-colors"]},
+            %% The page and the guide each hold a `theme` slot, so the
+            %% switch sets it in every view; the page script remembers it.
+            {az_click, [
+                arizona_js:set_all(~"theme", Theme),
+                arizona_js:dispatch_event(~"arizona:theme", #{theme => Theme})
+            ]}
+        ],
+        [Label]}.
+
 hero() ->
-    {section, [{class, [~"relative py-20 lg:py-32 px-6 ", ?REVEAL]}], [
-        {'div', [{class, ~"container mx-auto text-center"}], [
-            {'div', [{class, ~"flex justify-center mb-8"}], [
-                {'div', [{class, ~"relative"}], [
-                    logo(
-                        ~"images/arizona_512x512.jpeg",
-                        ~"h-32 w-32 lg:h-48 lg:w-48 rounded-2xl shadow-2xl shadow-arizona-terracotta/20 ring-4 ring-arizona-terracotta/30"
-                    ),
-                    {'div',
-                        [
-                            {class,
-                                ~"absolute -inset-1 -z-10 bg-gradient-to-r from-arizona-terracotta to-arizona-mesa rounded-2xl blur opacity-30"}
-                        ],
-                        []}
-                ]}
+    {section, [{class, [?CONTAINER, ~" pt-20 pb-16 sm:pt-28"]}], [
+        {p, [{class, ?EYEBROW}], [~"Erlang/OTP web framework"]},
+        {h1,
+            [
+                {class,
+                    ~"max-w-3xl text-4xl font-semibold leading-[1.1] tracking-tight text-ink sm:text-6xl"}
+            ],
+            [~"Real-time web apps in plain Erlang"]},
+        {p, [{class, ?LEAD}], [
+            ~"Write views as Erlang terms. Arizona renders them on the server, keeps each page ",
+            ~"live over a WebSocket, and sends only the values that changed."
+        ]},
+        {'div', [{class, ~"mt-8 flex flex-wrap gap-3"}], [
+            {button,
+                [
+                    {type, ~"button"},
+                    {class, ?PRIMARY},
+                    {az_click, arizona_js:show_modal(~"#quick-start")}
+                ],
+                [~"Get started"]},
+            {a, [{href, ?DOCS}, {class, ?SECONDARY}], [~"Read the docs"]}
+        ]},
+        {p, [{class, ~"mt-6 text-sm text-muted"}], [
+            ~"Arizona is in 0.x: the core is tested and in use, but the API can still change ",
+            ~"between minor versions."
+        ]}
+    ]}.
+
+example(Counter) ->
+    {section, [{id, ~"example"}, {class, [?CONTAINER, ~" scroll-mt-20 py-16"]}], [
+        {p, [{class, ?EYEBROW}], [~"Example"]},
+        {h2, [{class, ?H2}], [~"A live counter, in full"]},
+        {p, [{class, ?LEAD}], [
+            ~"No JavaScript to write. A click is an event on the server, and the reply patches ",
+            ~"the one number that changed."
+        ]},
+        {'div',
+            [
+                {id, ~"example-tabs"},
+                {class, ~"tabs mt-10 overflow-hidden rounded-xl border border-line bg-surface"},
+                {'data-tab', ?local(~"tab", ~"view")}
+            ],
+            [
+                {'div',
+                    [
+                        {role, ~"tablist"},
+                        {class, ~"flex gap-1 border-b border-line px-3 text-sm text-muted"}
+                    ],
+                    [
+                        tab(~"view", ~"counter.erl"),
+                        tab(~"config", ~"sys.config"),
+                        tab(~"static", ~"A static site")
+                    ]},
+                {'div', [{class, ~"panel panel-view"}], [code(~"code-view", Counter)]},
+                {'div', [{class, ~"panel panel-config"}], [code(~"code-config", route_sample())]},
+                {'div', [{class, ~"panel panel-static"}], [code(~"code-static", static_sample())]}
+            ]}
+    ]}.
+
+tab(Tab, Label) ->
+    {button,
+        [
+            {type, ~"button"},
+            {role, ~"tab"},
+            {class, [
+                ~"tab-",
+                Tab,
+                ~" -mb-px border-b-2 border-transparent px-3 py-3 font-medium transition-colors hover:text-ink"
             ]},
-            {h1, [{class, ~"text-4xl lg:text-7xl font-bold text-pearl mb-6 leading-tight"}], [
-                ~"Build ",
-                {span,
+            %% Every view: the guide beside the example marks the tab too.
+            {az_click, arizona_js:set_all(~"tab", Tab)}
+        ],
+        [Label]}.
+
+showcase() ->
+    {section, [{id, ~"this-page"}, {class, ~"scroll-mt-16 border-y border-line bg-sunken"}], [
+        {'div', [{class, [?CONTAINER, ~" py-16"]}], [
+            {p, [{class, ?EYEBROW}], [~"This page"]},
+            {h2, [{class, ?H2}], [~"Interactive, with no server"]},
+            {p, [{class, ?LEAD}], [
+                ~"This site is generated by ",
+                {code, [{class, ~"font-mono text-[0.9em] text-ink"}], [~"arizona_static"]},
+                ~" and served as plain files. Its controls are the same event attributes a live ",
+                ~"page uses; Arizona's static client runs them in the browser, with no WebSocket."
+            ]},
+            {'div', [{class, ~"mt-10 grid gap-8 lg:grid-cols-[1fr_20rem]"}], [
+                {ul,
                     [
                         {class,
-                            ~"bg-gradient-to-r from-arizona-teal to-arizona-terracotta bg-clip-text text-transparent"}
+                            ~"self-start divide-y divide-line rounded-xl border border-line bg-surface"}
                     ],
-                    [~"real-time"]},
-                {br, []},
-                ~"web applications in Erlang"
-            ]},
-            {p,
-                [
-                    {class,
-                        ~"text-xl lg:text-2xl text-silver mb-10 max-w-3xl mx-auto leading-relaxed"}
-                ],
-                [
-                    ~"Write views as plain Erlang. Arizona renders them on the server, keeps each page live over a WebSocket, and sends ",
-                    {strong, [{class, ~"text-arizona-teal"}], [~"only what changed"]},
-                    ~"."
-                ]},
-            {'div', [{class, ~"flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"}],
-                [
-                    {a,
+                    [
+                        ?each(
+                            fun(#{what := What, code := Code}) ->
+                                {li, [{class, ~"px-5 py-4"}], [
+                                    {p, [{class, ~"text-sm font-medium text-ink"}], [What]},
+                                    {code,
+                                        [
+                                            {class,
+                                                ~"mt-1 block font-mono text-[0.8125rem] text-teal"}
+                                        ],
+                                        [Code]}
+                                ]}
+                            end,
+                            showcase_list()
+                        )
+                    ]},
+                {'div', [], [
+                    ?stateful(arizona_website_guide, #{id => ~"guide"}),
+                    {button,
                         [
-                            {href, ?QUICK_START},
-                            {target, ~"_blank"},
-                            {rel, ~"noopener noreferrer"},
-                            {class,
-                                ~"inline-block font-bold py-4 px-8 rounded-xl bg-gradient-to-r from-arizona-terracotta to-arizona-mesa text-pearl shadow-2xl shadow-arizona-terracotta/25 hover:scale-105 transition-all duration-300"}
+                            {type, ~"button"},
+                            %% Hidden by the page script where the browser has
+                            %% no Document Picture-in-Picture.
+                            {az_hook, ~"NeedsPip"},
+                            {class, [?SECONDARY, ~" mt-3 w-full justify-center"]},
+                            {az_click,
+                                arizona_js:request_pip(~"guide", #{width => 360, height => 440})}
                         ],
-                        [~"Get started"]},
-                    {a,
-                        [
-                            {href, ?DOCS},
-                            {target, ~"_blank"},
-                            {rel, ~"noopener noreferrer"},
-                            {class,
-                                ~"inline-block font-semibold py-4 px-8 rounded-xl bg-charcoal/50 hover:bg-slate/50 text-pearl border border-slate backdrop-blur-sm transition-all duration-300"}
-                        ],
-                        [~"Read the docs"]}
-                ]},
-            {p, [{class, ~"text-arizona-sand text-sm max-w-2xl mx-auto"}], [
-                ~"Arizona is in 0.x: the core is tested and in use, but the API can still change between minor versions."
+                        [~"Pop out the guide"]}
+                ]}
             ]}
         ]}
     ]}.
 
 features() ->
-    {section, [{id, ~"features"}, {class, [~"py-20 px-6 bg-obsidian/30 ", ?REVEAL]}], [
-        {'div', [{class, ~"container mx-auto"}], [
-            {h2, [{class, ~"text-4xl font-bold text-pearl text-center mb-16"}], [
-                ~"Why ",
-                {span, [{class, ~"text-arizona-teal"}], [~"Arizona?"]}
-            ]},
-            {'div', [{class, ~"grid md:grid-cols-2 lg:grid-cols-3 gap-8"}], [
-                ?each(
-                    fun(#{icon := Icon, title := Title, text := Text}) ->
-                        {'div', [{class, ?CARD}], [
-                            {'div',
-                                [
-                                    {class,
-                                        ~"bg-gradient-to-r from-arizona-terracotta to-arizona-mesa w-12 h-12 rounded-lg flex items-center justify-center mb-6"}
-                                ],
-                                [
-                                    {svg,
-                                        [
-                                            {class, ~"h-6 w-6 text-pearl"},
-                                            {fill, ~"none"},
-                                            {stroke, ~"currentColor"},
-                                            {'viewBox', ~"0 0 24 24"},
-                                            {'aria-hidden', ~"true"}
-                                        ],
-                                        [
-                                            {path, [
-                                                {stroke_linecap, ~"round"},
-                                                {stroke_linejoin, ~"round"},
-                                                {stroke_width, ~"2"},
-                                                {d, Icon}
-                                            ]}
-                                        ]}
-                                ]},
-                            {h3, [{class, ~"text-xl font-bold text-pearl mb-4"}], [Title]},
-                            {p, [{class, ~"text-silver"}], [Text]}
-                        ]}
-                    end,
-                    feature_list()
-                )
-            ]}
+    {section, [{id, ~"features"}, {class, [?CONTAINER, ~" scroll-mt-20 py-16"]}], [
+        {p, [{class, ?EYEBROW}], [~"Features"]},
+        {h2, [{class, ?H2}], [~"Why Arizona"]},
+        {'div', [{class, ~"mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3"}], [
+            ?each(
+                fun(#{title := Title, text := Text}) ->
+                    {'div', [{class, ~"border-t border-line pt-5"}], [
+                        {h3, [{class, ~"font-semibold text-ink"}], [Title]},
+                        {p, [{class, ~"mt-2 text-sm leading-relaxed text-muted"}], [Text]}
+                    ]}
+                end,
+                feature_list()
+            )
         ]}
     ]}.
 
-example(Source) ->
-    {section, [{id, ~"example"}, {class, [~"py-20 px-6 ", ?REVEAL]}], [
-        {'div', [{class, ~"container mx-auto max-w-4xl"}], [
-            {h2, [{class, ~"text-4xl font-bold text-pearl text-center mb-4"}], [
-                ~"A live counter, ",
-                {span, [{class, ~"text-arizona-teal"}], [~"in full"]}
+adapters() ->
+    {section, [{class, [?CONTAINER, ~" pb-20"]}], [
+        {'div', [{class, ~"rounded-2xl border border-line bg-surface p-8 sm:p-10"}], [
+            {p, [{class, ?EYEBROW}], [~"Servers"]},
+            {h2, [{class, ~"text-2xl font-semibold tracking-tight text-ink"}], [
+                ~"Runs on the server you already have"
             ]},
-            {p, [{class, ~"text-silver text-center mb-10 text-lg"}], [
-                ~"No JavaScript to write. A click is an event on the server, and the reply patches the one number that changed."
+            {p, [{class, ~"mt-3 max-w-2xl text-muted"}], [
+                ~"The HTTP and WebSocket server is an adapter package, so Arizona fits in beside ",
+                ~"what you run today."
             ]},
-            {'div',
-                [
-                    {class,
-                        ~"bg-obsidian/80 rounded-xl overflow-hidden border border-slate shadow-2xl hover:border-arizona-teal/50 transition-all duration-300"}
-                ],
-                [
-                    {'div', [{class, ~"bg-charcoal px-4 py-2 border-b border-slate"}], [
-                        {span, [{class, ~"text-silver text-sm"}], [~"counter.erl"]}
-                    ]},
-                    {pre,
-                        [
-                            {class, ~"text-sm leading-relaxed overflow-x-auto"},
-                            {style, ~"margin: 0"}
-                        ],
-                        [
-                            {code, [{class, ~"language-erlang"}], [Source]}
-                        ]}
-                ]}
-        ]}
-    ]}.
-
-targets() ->
-    {section, [{class, [~"py-20 px-6 bg-obsidian/30 ", ?REVEAL]}], [
-        {'div', [{class, ~"container mx-auto text-center"}], [
-            {h2, [{class, ~"text-4xl font-bold text-pearl mb-4"}], [
-                ~"Runs on ",
-                {span, [{class, ~"text-arizona-teal"}], [~"your stack"]}
-            ]},
-            {p, [{class, ~"text-silver mb-16 max-w-2xl mx-auto"}], [
-                ~"The server is an adapter, so Arizona fits the application you already have."
-            ]},
-            {'div', [{class, ~"grid md:grid-cols-3 gap-8"}], [
+            {'div', [{class, ~"mt-8 grid gap-4 md:grid-cols-3"}], [
                 ?each(
                     fun(#{name := Name, text := Text, href := Href}) ->
                         {a,
                             [
                                 {href, Href},
-                                {target, ~"_blank"},
-                                {rel, ~"noopener noreferrer"},
-                                {class, [?CARD, ~" block"]}
+                                {class,
+                                    ~"block rounded-xl border border-line p-5 transition-colors hover:border-accent"}
                             ],
                             [
-                                {p, [{class, ~"text-2xl font-bold text-arizona-teal mb-2"}], [Name]},
-                                {p, [{class, ~"text-silver"}], [Text]}
+                                {p, [{class, ~"font-semibold text-ink"}], [Name]},
+                                {p, [{class, ~"mt-1 text-sm text-muted"}], [Text]}
                             ]}
                     end,
-                    target_list()
+                    adapter_list()
                 )
             ]}
         ]}
     ]}.
 
 footer() ->
-    {footer, [{class, ~"py-12 px-6 border-t border-slate bg-obsidian/50"}], [
-        {'div', [{class, ~"container mx-auto text-center"}], [
-            {'div', [{class, ~"flex items-center justify-center gap-3 mb-6"}], [
-                logo(~"images/arizona_256x256.jpeg", ~"h-8 w-8 rounded-lg"),
-                {span, [{class, ~"text-pearl font-bold text-lg"}], [~"Arizona Framework"]}
-            ]},
-            {p, [{class, ~"text-silver mb-4"}], [~"Real-time web applications on Erlang/OTP"]},
-            {'div',
-                [{class, ~"flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6"}],
-                [
-                    {a,
-                        [
-                            {href, ?GITHUB},
-                            {class, ~"text-silver hover:text-arizona-teal transition-colors"}
-                        ],
-                        [
-                            ~"GitHub"
-                        ]},
-                    {a,
-                        [
-                            {href, ?DOCS},
-                            {class, ~"text-silver hover:text-arizona-teal transition-colors"}
-                        ],
-                        [
-                            ~"Documentation"
-                        ]},
-                    {a,
-                        [
-                            {href, ~"https://erlangforums.com"},
-                            {class, ~"text-silver hover:text-arizona-teal transition-colors"}
-                        ],
-                        [~"Erlang Forums"]}
-                ]},
-            {'div', [{class, ~"mt-8 pt-8 border-t border-slate text-sm"}], [
-                {p, [{class, ~"text-arizona-sand"}], [~"Built with Arizona 🌵"]},
-                {p, [{class, ~"text-silver mt-2"}], [
-                    ~"This site is powered by ",
-                    {a,
-                        [
-                            {href, ~"https://www.netlify.com"},
-                            {target, ~"_blank"},
-                            {rel, ~"noopener noreferrer"},
-                            {class, ~"text-arizona-teal hover:text-arizona-sage transition-colors"}
-                        ],
-                        [~"Netlify"]}
+    {footer, [{class, ~"border-t border-line"}], [
+        {'div',
+            [
+                {class, [
+                    ?CONTAINER,
+                    ~" flex flex-col gap-4 py-10 text-sm text-muted sm:flex-row sm:items-center sm:justify-between"
+                ]}
+            ],
+            [
+                {p, [], [~"Arizona Framework. Built with Arizona."]},
+                {'div', [{class, ~"flex gap-6"}], [
+                    {a, [{href, ?GITHUB}, {class, ?NAV_LINK}], [~"GitHub"]},
+                    {a, [{href, ?DOCS}, {class, ?NAV_LINK}], [~"Documentation"]},
+                    {a, [{href, ~"https://erlangforums.com"}, {class, ?NAV_LINK}], [
+                        ~"Erlang Forums"
+                    ]}
                 ]}
             ]}
-        ]}
     ]}.
 
-logo(Src, Class) ->
-    {img, [
-        {src, Src},
-        {alt, ~"Arizona Framework"},
-        {class, Class},
-        {loading, ~"lazy"},
-        {decoding, ~"async"}
+quick_start() ->
+    {dialog,
+        [
+            {id, ~"quick-start"},
+            {'aria-labelledby', ~"quick-start-title"},
+            {class,
+                ~"m-auto w-[min(44rem,calc(100%-2rem))] rounded-2xl border border-line bg-surface p-0 text-ink shadow-2xl"}
+        ],
+        [
+            {'div', [{class, ~"flex items-center justify-between border-b border-line px-6 py-4"}],
+                [
+                    {h2, [{id, ~"quick-start-title"}, {class, ~"font-semibold"}], [~"Get started"]},
+                    {button,
+                        [
+                            {type, ~"button"},
+                            {'aria-label', ~"Close"},
+                            {class,
+                                ~"rounded-md px-2 py-1 text-muted hover:bg-sunken hover:text-ink"},
+                            {az_click, arizona_js:close_modal(~"#quick-start")}
+                        ],
+                        [~"✕"]}
+                ]},
+            {ol, [{class, ~"space-y-6 px-6 py-6 text-sm"}], [
+                step(~"1", ~"Add Arizona and a server adapter to rebar.config", [
+                    code(~"code-deps", deps_sample())
+                ]),
+                step(~"2", ~"Route a view in config/sys.config", [
+                    code(~"code-route", route_sample())
+                ]),
+                step(~"3", ~"Start a shell and open http://localhost:8080", [
+                    code(~"code-run", ~"rebar3 shell")
+                ])
+            ]},
+            {'div', [{class, ~"border-t border-line px-6 py-4 text-sm"}], [
+                {a, [{href, ?QUICK_START}, {class, ~"font-medium text-accent hover:underline"}], [
+                    ~"The full quick start, with the layout and the counter"
+                ]}
+            ]}
+        ]}.
+
+step(N, Title, Body) ->
+    {li, [], [
+        {p, [{class, ~"mb-2 flex items-center gap-2 font-medium"}], [
+            {span,
+                [
+                    {class,
+                        ~"flex h-5 w-5 items-center justify-center rounded-full bg-accent-soft text-xs text-accent"}
+                ],
+                [N]},
+            Title
+        ]},
+        {'div', [{class, ~"overflow-hidden rounded-lg border border-line"}], Body}
+    ]}.
+
+%% A code block with a copy button. The button marks itself copied, which the
+%% stylesheet shows; both are browser-side commands.
+code(Id, Source) ->
+    {'div', [{class, ~"group relative"}], [
+        {button,
+            [
+                {type, ~"button"},
+                {class,
+                    ~"absolute top-2.5 right-2.5 rounded-md border border-white/10 bg-white/5 px-2 py-1 text-xs text-stone-300 opacity-0 transition-opacity group-hover:opacity-100 focus:opacity-100 data-[copied]:opacity-100"},
+                {az_click, [
+                    arizona_js:copy_to_clipboard(<<"#", Id/binary>>),
+                    arizona_js:set_attr(<<"#", Id/binary, "-copy">>, ~"data-copied", ~"")
+                ]},
+                {id, <<Id/binary, "-copy">>}
+            ],
+            [
+                {span, [{class, ~"in-data-[copied]:hidden"}], [~"Copy"]},
+                {span, [{class, ~"hidden in-data-[copied]:inline"}], [~"Copied"]}
+            ]},
+        {pre, [{class, ~"language-erlang"}], [
+            {code, [{id, Id}, {class, ~"language-erlang"}], [Source]}
+        ]}
     ]}.
 
 %% --------------------------------------------------------------------
 %% Content
 %% --------------------------------------------------------------------
 
+showcase_list() ->
+    [
+        #{
+            what => ~"The theme switch sets a value the browser owns",
+            code => ~"arizona_js:set_all(~\"theme\", ~\"dark\")"
+        },
+        #{
+            what => ~"Each tab sets the one the panels and the guide read",
+            code => ~"arizona_js:set_all(~\"tab\", ~\"config\")"
+        },
+        #{
+            what => ~"Get started opens a modal dialog",
+            code => ~"arizona_js:show_modal(~\"#quick-start\")"
+        },
+        #{
+            what => ~"Every code block copies itself",
+            code => ~"arizona_js:copy_to_clipboard(~\"#code-view\")"
+        },
+        #{
+            what => ~"The guide floats in its own window, and still drives the page",
+            code => ~"arizona_js:request_pip(~\"guide\")"
+        }
+    ].
+
 feature_list() ->
     [
         #{
-            icon => ~"M13 10V3L4 14h7v7l9-11h-7z",
             title => ~"Live by default",
             text =>
-                ~"The first load is plain HTML. After that, each page stays live over a WebSocket, and PubSub pushes updates to every connected tab."
+                ~"The first load is plain HTML. After that each page stays live over a WebSocket, and PubSub pushes updates to every connected tab."
         },
         #{
-            icon =>
-                ~"M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
             title => ~"Minimal updates",
             text =>
-                ~"Templates are split into static and dynamic parts at compile time. Statics go once; an update sends only the slots whose data changed."
+                ~"Templates split into static and dynamic parts at compile time. Statics go once; an update sends only the slots whose data changed."
         },
         #{
-            icon => ~"M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
             title => ~"Plain Erlang templates",
             text =>
-                ~"Views are {Tag, Attrs, Children} terms, checked by the compiler. Streams, client-owned state and SPA navigation are built in."
+                ~"Views are {Tag, Attrs, Children} terms the compiler checks. Streams, client-owned state and SPA navigation are built in."
         },
         #{
-            icon =>
-                ~"M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
             title => ~"BEAM reliability",
             text =>
                 ~"Every live page is a supervised process. Deploys drain sessions gracefully and clients reconnect on their own."
         },
         #{
-            icon => ~"M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z",
             title => ~"Beyond the browser",
             text =>
-                ~"The same views and diff engine also drive native Android and iOS clients, and render to a terminal over a TTY or SSH."
+                ~"The same views and diff engine drive native Android and iOS clients, and render to a terminal over a TTY or SSH."
         },
         #{
-            icon =>
-                ~"M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15",
-            title => ~"Fast feedback",
+            title => ~"Static when you want it",
             text =>
-                ~"Save a file and the dev reloader recompiles it and refreshes the page. Static pages, like this one, are generated from the same views."
+                ~"Generate pages like this one from the same views, with browser-side commands and no server to run."
         }
     ].
 
-target_list() ->
+adapter_list() ->
     [
         #{
             name => ~"Roadrunner",
@@ -401,6 +463,47 @@ target_list() ->
         #{
             name => ~"Nova",
             text => ~"Live Arizona pages inside a Nova application, beside its own routes.",
-            href => ?NOVA
+            href => ~"https://github.com/arizona-framework/arizona_nova"
         }
     ].
+
+deps_sample() ->
+    ~"""
+    {deps, [
+        {arizona, {git,
+            "https://github.com/arizona-framework/arizona.git",
+            {branch, "main"}}},
+        {arizona_roadrunner, {git,
+            "https://github.com/arizona-framework/arizona_roadrunner.git",
+            {branch, "main"}}}
+    ]}.
+    """.
+
+route_sample() ->
+    ~"""
+    [{arizona, [
+        {server, #{
+            adapter => arizona_roadrunner_server,
+            transport_opts => [{port, 8080}],
+            routes => [
+                %% The page, its WebSocket and the client runtime.
+                {live, ~"/", counter, #{
+                    layouts => [{my_layout, render}]
+                }},
+                {ws, ~"/ws", #{}},
+                {asset, ~"/assets", {priv_dir, arizona, "static/assets/js"}}
+            ]
+        }}
+    ]}].
+    """.
+
+static_sample() ->
+    ~"""
+    %% Render views to HTML files. A layout that loads the static client
+    %% (arizona-static.min.js) and calls start() keeps the browser-side
+    %% commands working, with no server: this site is built this way.
+    {Written, []} = arizona_static:generate(~"dist", [
+        {home_page, ~"index.html"},
+        {about_page, ~"about/index.html"}
+    ], #{layouts => [{site_layout, render}]}).
+    """.
