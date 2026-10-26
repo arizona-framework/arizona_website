@@ -470,12 +470,8 @@ adapter_list() ->
 deps_sample() ->
     ~"""
     {deps, [
-        {arizona, {git,
-            "https://github.com/arizona-framework/arizona.git",
-            {branch, "main"}}},
-        {arizona_roadrunner, {git,
-            "https://github.com/arizona-framework/arizona_roadrunner.git",
-            {branch, "main"}}}
+        arizona,
+        arizona_roadrunner
     ]}.
     """.
 

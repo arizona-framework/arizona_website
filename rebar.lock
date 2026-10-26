@@ -1,4 +1,8 @@
-[{<<"arizona">>,
-  {git,"https://github.com/arizona-framework/arizona.git",
-       {ref,"d68fc17d9f00acce757d01d7efcdaaea2690edcf"}},
-  0}].
+{"1.2.0",
+[{<<"arizona">>,{pkg,<<"arizona">>,<<"0.4.0">>},0}]}.
+[
+{pkg_hash,[
+ {<<"arizona">>, <<"2700535AE2DC3F075665F4C0D3DE39D53F87CFFC412D6E17CD1616988E6E545F">>}]},
+{pkg_hash_ext,[
+ {<<"arizona">>, <<"773EF39F9F9F9155F5292AD97EB26371726F67CF82BA6E098077301CBAF6D59F">>}]}
+].
